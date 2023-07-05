@@ -1,0 +1,66 @@
+var DataTypes = require("sequelize").DataTypes;
+var _account = require("./account");
+var _activity_login = require("./activity_login");
+var _bill = require("./bill");
+var _menu = require("./menu");
+var _order = require("./order");
+var _order_detail = require("./order_detail");
+var _role = require("./role");
+var _staff = require("./staff");
+var _status_order = require("./status_order");
+var _table = require("./table");
+var _type_dish = require("./type_dish");
+
+function initModels(sequelize) {
+  var account = _account(sequelize, DataTypes);
+  var activity_login = _activity_login(sequelize, DataTypes);
+  var bill = _bill(sequelize, DataTypes);
+  var menu = _menu(sequelize, DataTypes);
+  var order = _order(sequelize, DataTypes);
+  var order_detail = _order_detail(sequelize, DataTypes);
+  var role = _role(sequelize, DataTypes);
+  var staff = _staff(sequelize, DataTypes);
+  var status_order = _status_order(sequelize, DataTypes);
+  var table = _table(sequelize, DataTypes);
+  var type_dish = _type_dish(sequelize, DataTypes);
+
+  activity_login.belongsTo(account, { as: "id_account_account", foreignKey: "id_account"});
+  account.hasMany(activity_login, { as: "activity_logins", foreignKey: "id_account"});
+  bill.belongsTo(account, { as: "id_staff_account", foreignKey: "id_staff"});
+  account.hasMany(bill, { as: "bills", foreignKey: "id_staff"});
+  order.belongsTo(account, { as: "id_staff_account", foreignKey: "id_staff"});
+  account.hasMany(order, { as: "orders", foreignKey: "id_staff"});
+  staff.belongsTo(account, { as: "id_account_account", foreignKey: "id_account"});
+  account.hasMany(staff, { as: "staffs", foreignKey: "id_account"});
+  order_detail.belongsTo(menu, { as: "id_dish_menu", foreignKey: "id_dish"});
+  menu.hasMany(order_detail, { as: "order_details", foreignKey: "id_dish"});
+  bill.belongsTo(order, { as: "id_order_order", foreignKey: "id_order"});
+  order.hasMany(bill, { as: "bills", foreignKey: "id_order"});
+  order_detail.belongsTo(order, { as: "id_order_order", foreignKey: "id_order"});
+  order.hasMany(order_detail, { as: "order_details", foreignKey: "id_order"});
+  account.belongsTo(role, { as: "role_role", foreignKey: "role"});
+  role.hasMany(account, { as: "accounts", foreignKey: "role"});
+  order_detail.belongsTo(status_order, { as: "status_status_order", foreignKey: "status"});
+  status_order.hasMany(order_detail, { as: "order_details", foreignKey: "status"});
+  order.belongsTo(table, { as: "table_table", foreignKey: "table"});
+  table.hasMany(order, { as: "orders", foreignKey: "table"});
+  menu.belongsTo(type_dish, { as: "type_type_dish", foreignKey: "type"});
+  type_dish.hasMany(menu, { as: "menus", foreignKey: "type"});
+
+  return {
+    account,
+    activity_login,
+    bill,
+    menu,
+    order,
+    order_detail,
+    role,
+    staff,
+    status_order,
+    table,
+    type_dish,
+  };
+}
+module.exports = initModels;
+module.exports.initModels = initModels;
+module.exports.default = initModels;
