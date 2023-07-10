@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include('./partials/head'); %>
+    <title>Đăng nhập</title>
     <link href="/public/css/login.css" rel="stylesheet" type="text/css">
 
     <body>
@@ -22,7 +23,8 @@
                                 <div class="form-group">
                                     <label for="remember-me" class="text-info"><span>Nhớ tài khoản</span> <span><input
                                                 id="remember-me" name="remember-me" type="checkbox"></span></label><br>
-                                    <button name="submit" class="btn btn-info btn-md" onclick="Login()">Đăng nhập</button>
+                                    <button name="submit" class="btn btn-info btn-md" id="btn-Login">Đăng
+                                        nhập</button>
                                 </div>
                             </div>
                         </div>
@@ -30,15 +32,27 @@
                 </div>
             </div>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script>
-            async function Login() {
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                axios.post("/api/v1/auth/login",{
-                    username,
-                    password
-                }).then(data=>console.log(data)).catch(err=>console.log(err))
+        <script type="module">
+            import axios from '../public/js/axios.js'
+            function Login() {
+                (async () => {
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+                    const data = (await axios.post("/api/v1/auth/login", {
+                        username,
+                        password
+                    })).data
+                    if(data.accessToken){
+                        localStorage.setItem('accessToken',data.accessToken);
+                        localStorage.setItem('refreshToken',data.refreshToken);
+                        window.location.href= '/view/home'
+                    }
+                }
+                )().catch(err => {
+                    console.log(err)
+                }).finally(() => console.log('xong'))
             }
+            document.getElementById("btn-Login").addEventListener("click", Login);
         </script>
+
 </html>
