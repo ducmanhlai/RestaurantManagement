@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head'); %>
+
+    <body id="page-top" class="text-dark">
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Chỉnh sửa</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <input type="text" id='username' class="form-control text-dark" placeholder="Tên đăng nhập">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="password" id="password" class="form-control text-dark" placeholder="Mật khẩu">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="text" id="name" class="form-control text-dark" placeholder="Tên nhân viên">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="text" id="phone" class="form-control text-dark" placeholder="Số điện thoại">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="text" id="salary" class="form-control text-dark" placeholder="Lương">
+
+                        </div>
+                        <div class="input-group mb-3">
+                            <div>Chọn chức vụ</div>
+                            <select class="form-select text-dark" id="role">
+                                <option value="2">Manager</option>
+                                <option value="3">Order</option>
+                                <option value="4">Kitchen</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary" id="btnSave">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <%- include('./partials/menu'); %>
+                <div id="content-wrapper" class="d-flex flex-column">
+
+                    <!-- Main Content -->
+                    <div id="content">
+
+                        <%- include('./partials/navbar'); %>
+
+                            <!-- Begin Page Content -->
+                            <div class="container-fluid">
+                                <table class="table">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">STT</th>
+                                            <th scope="col">Tên</th>
+                                            <th scope="col">Số điện thoại</th>
+                                            <th scope="col">Lương</th>
+                                            <th scope="col">Chức vụ</th>
+                                            <th scope="col">Chỉnh sửa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-body">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.container-fluid -->
+
+                    </div>
+                    <!-- End of Main Content -->
+
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>Copyright &copy; Đức Mạnh</span>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- End of Footer -->
+
+                </div>
+
+                <a class="scroll-to-top rounded" href="#page-top">
+                    <i class="fas fa-angle-up"></i>
+                </a>
+
+                <%- include('./partials/foot'); %>
+                    <script type="module">
+                        document.getElementById('btnSave').addEventListener('click', ManageStaff)
+                        import axiosApiInstance from '../public/js/interceptor.js'
+                        // import socket from '../public/js/socket.js'
+                        import axios from '../public/js/axios.js';
+                        var tableBody = document.getElementById('table-body');
+                        (async () => {
+                            const data = (await axiosApiInstance.get('/api/v1/admin/staff/get')).data.data;
+                            data.forEach(function (item, index) {
+                                insert(item, index)
+                            });
+                        })().catch(err => console.log(err))
+                        let idStaff = 0
+                        function insert(item, index) {
+                            var row = document.createElement('tr');
+                            var idCell = document.createElement('td');
+                            idCell.textContent = index + 1;
+                            row.appendChild(idCell);
+
+                            var nameCell = document.createElement('td');
+                            nameCell.textContent = item.staffs[0]?.name;
+                            row.appendChild(nameCell);
+
+                            var phoneCell = document.createElement('td');
+                            phoneCell.textContent = item?.staffs[0]?.phone;
+                            row.appendChild(phoneCell);
+
+                            var salaryCell = document.createElement('td');
+                            salaryCell.textContent = item?.staffs[0]?.salary;
+                            row.appendChild(salaryCell);
+
+                            var roleCell = document.createElement('td');
+                            roleCell.textContent = item.role_role.name;
+                            row.appendChild(roleCell);
+                            var btn = document.createElement('td');
+                            let newbtn = document.createElement("button")
+                            newbtn.textContent = 'Sửa'
+                            newbtn.setAttribute('data-bs-target', '#exampleModal')
+                            newbtn.setAttribute("data-bs-toggle", "modal")
+                            newbtn.setAttribute('class', 'btn btn-primary')
+                            newbtn.addEventListener('click', () => getStaff(item.id))
+                            btn.appendChild(newbtn)
+                            row.appendChild(btn);
+                            tableBody.appendChild(row);
+                        }
+                        function getStaff(id) {
+                            (async () => {
+                                const data = (await axiosApiInstance.get(`/api/v1/admin/staff/get?id=${id}`)).data.data;
+                                idStaff = data.id
+                                document.getElementById('modalLabel').value = "Chỉnh sửa"
+                                document.getElementById('username').value = data.user_name;
+                                document.getElementById('password').value = "";
+                                document.getElementById('name').value = data.staffs[0]?.name || "";
+                                document.getElementById('phone').value = data.staffs[0]?.phone || "";
+                                document.getElementById('salary').value = data.staffs[0]?.salary || "";
+                                var selectElement = document.getElementById('role'); // Thay 'selectId' bằng ID của thẻ select của bạn
+                                // Thiết lập option được chọn
+                                var optionValue = data.role_role.id || 2; // Giá trị của option mà bạn muốn chọn
+                                var optionElement = selectElement.querySelector('option[value="' + optionValue + '"]');
+                                if (optionElement) {
+                                    optionElement.selected = true;
+                                } else {
+                                    console.error('lỗi', optionValue);
+                                }
+                            })().catch(err => alert(err))
+                        }
+                        function ManageStaff(type = 1) {
+                            //type == 1: sửa
+
+                            let user_name = document.getElementById('username').value;
+                            let password = document.getElementById('password').value;
+                            let name = document.getElementById('name').value;
+                            let phone = document.getElementById('phone').value;
+                            let salary = document.getElementById('salary').value;
+                            let role = document.getElementById('role').value;
+                            const formData = new FormData();
+                            formData.append('username', user_name);
+                            formData.append('password', password);
+                            formData.append('name', name);
+                            formData.append('phone', phone);
+                            formData.append('salary', salary);
+                            formData.append('role', role);
+                            if (idStaff == 0) {
+                                (async () => {
+                                    const data = (await axiosApiInstance.post(`/api/v1/admin/staff/create`, formData,
+                                        { headers: { "Content-Type": "multipart/form-data" } })).data.data
+                                    console.log(data)
+                                })().catch(err => {
+
+                                    alert('Có lỗi')
+                                })
+                            }
+                            else {
+                                
+                            }
+                        }
+                    </script>
+    </body>
+
+</html>
