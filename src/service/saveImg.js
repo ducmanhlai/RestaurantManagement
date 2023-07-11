@@ -1,8 +1,8 @@
 import { bucket } from "./firebase"
-
+import { v4 as uuidv4 } from 'uuid';
 export default function saveImg(req,res) {
-    const filename= req.files[0].originalname
-    const blob = bucket.file(req.files[0].originalname)
+    const filename= uuidv4()
+    const blob = bucket.file(filename)
 
     const blobWriter = blob.createWriteStream({
         metadata: {
@@ -14,7 +14,7 @@ export default function saveImg(req,res) {
     })
 
     blobWriter.on('finish', (data) => {
-       
+       console.log('uploaded')
     })
 
     blobWriter.end(req.files[0].buffer)

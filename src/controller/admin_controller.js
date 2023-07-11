@@ -106,22 +106,30 @@ class admin_controller {
     }
     async modifyStaff(req, res) {
         try {
-            const { password, role, staffInfo } = req.body;
-            const avatar = req.files.length == 0 ? "" : saveImg(req, res)
+            let { username, password, role, ...staffInfo } = req.body;
             const salt = await bcrypt.genSalt(10);
-            const new_password = await bcrypt.hash(password, salt)
             const acc = await account.findByPk(req.body.id);
-            const obj = req.body?.password ? { password, role } : { role };
+            const obj = req.body?.password ? { password: await bcrypt.hash(password, salt), role, username } : { username, role };
             acc.set(obj)
             if (acc) {
-                const staff = await Model.staff.findOne({
+                let staff = await Model.staff.findOne({
                     where: {
                         id_account: req.body.id
                     }
                 })
-                staff.set({
-                    staffInfo
-                })
+
+                if (staff) {
+                    const avatar = req.files.length == 0 ? staff.dataValues.avatar : `https://firebasestorage.googleapis.com/v0/b/thuctap-c9a4b.appspot.com/o/${saveImg(req, res)}?alt=media`;
+                    staff.set({
+                        ...staffInfo,
+                        avatar:  avatar
+                    })
+                }
+                else {
+                    const avatar = req.files.length == 0 ? '' : saveImg(req, res);
+                    delete staffInfo['id']
+                    staff = await Model.staff.create({ ...staffInfo, avatar, id_account: req.body.id })
+                }
                 Promise.all([acc.save(), staff.save()]).then(data => {
                     return res.status(200).send({
                         message: 'Cập nhật thành công',
@@ -134,10 +142,6 @@ class admin_controller {
                     })
                 })
             }
-            res.status(200).send({
-                message: 'Có lỗi xảy ra',
-                data: []
-            })
         } catch (error) {
             console.log(error);
             res.status(500).send({
