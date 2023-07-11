@@ -2,8 +2,8 @@ class home_controller {
     home(req, res) {
         res.render('home')
     }
-    menu(req,res){
-        res.render('menu')
+    food(req,res){
+        res.render('food')
     }
     staff(req,res){
         res.render('staff')

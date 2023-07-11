@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Quản lý món ăn</title>
+<%- include('./partials/head'); %>
+
+
+    <body id="page-top">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Chỉnh sửa</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <input type="text" id="name" class="form-control text-dark" placeholder="Tên món">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="text" id="price" class="form-control text-dark" placeholder="Giá bán">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="file" id="file" class="form-control text-dark" placeholder="Hình ảnh">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div>Chọn loại</div>
+                            <select class="form-select text-dark" id="type">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary" id="btnSave">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <%- include('./partials/menu'); %>
+                <div id="content-wrapper" class="d-flex flex-column">
+
+                    <!-- Main Content -->
+                    <div id="content">
+
+                        <%- include('./partials/navbar'); %>
+
+                            <!-- Begin Page Content -->
+                            <div class="container-fluid">
+                                <div class="toast-container position-fixed top-0 end-0 p-3">
+                                    <div id="liveToast" class="toast" role="alert" aria-live="assertive"
+                                        aria-atomic="true">
+                                        <div class="toast-header">
+                                            <strong class="me-auto" id="toastTitle">Thông báo</strong>
+                                            <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="toast-body" id="toastMessage">
+                                            Hello, world! This is a toast message.
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-labeled btn-info mb-1" id="btn-add"
+                                    data-bs-toggle="modal" data-bs-target='#exampleModal'>
+                                    <span class="btn-label"><i class="fa fa-plus"></i></span> Thêm món ăn
+                                </button>
+                                <table class="table">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">STT</th>
+                                            <th scope="col">Ảnh</th>
+                                            <th scope="col">Tên</th>
+                                            <th scope="col">Giá bán</th>
+                                            <th scope="col">Chỉnh sửa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-body">
+                                    </tbody>
+                                </table>
+                            </div>
+
+                    </div>
+                    <!-- End of Main Content -->
+
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>Copyright &copy; Đức Mạnh</span>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- End of Footer -->
+
+                </div>
+                <!-- End of Page Wrapper -->
+
+                <!-- Scroll to Top Button-->
+                <a class="scroll-to-top rounded" href="#page-top">
+                    <i class="fas fa-angle-up"></i>
+                </a>
+                <%- include('./partials/foot'); %>
+                <script type="module" src="../public/js/manage-food.js"></script>
+    </body>
+
+</html>

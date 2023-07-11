@@ -7,7 +7,6 @@ const account = Model.account;
 class admin_controller {
 
     async getStaff(req, res) {
-
         try {
             const id = req.query?.id || 0;
             if (id == 0) {
