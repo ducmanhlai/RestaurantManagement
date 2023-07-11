@@ -4,6 +4,7 @@
 
     <body id="page-top" class="text-dark">
         <!-- Modal -->
+
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -26,7 +27,9 @@
                         </div>
                         <div class="input-group mb-3">
                             <input type="text" id="salary" class="form-control text-dark" placeholder="Lương">
-
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="file" id="file" class="form-control text-dark" placeholder="Avatar">
                         </div>
                         <div class="input-group mb-3">
                             <div>Chọn chức vụ</div>
@@ -57,11 +60,31 @@
 
                             <!-- Begin Page Content -->
                             <div class="container-fluid">
+                                <div class="toast-container position-fixed top-0 end-0 p-3">
+                                    <div id="liveToast" class="toast" role="alert" aria-live="assertive"
+                                        aria-atomic="true">
+                                        <div class="toast-header">
+                                            <strong class="me-auto" id="toastTitle">Thông báo</strong>
+                                            <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="toast-body" id="toastMessage">
+                                            Hello, world! This is a toast message.
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <button type="button" class="btn btn-labeled btn-info">
+                                <span class="btn-label"><i class="fa fa-plus" aria-hidden="true"></i></span></button> -->
+                                <button type="button" class="btn btn-labeled btn-info" id="btn-add"
+                                    data-bs-toggle="modal" data-bs-target='#exampleModal'>
+                                    <span class="btn-label"><i class="fa fa-plus"></i></span> Thêm nhân viên
+                                </button>
                                 <table class="table">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th scope="col">STT</th>
                                             <th scope="col">Tên</th>
+                                            <th scope="col">Ảnh</th>
                                             <th scope="col">Số điện thoại</th>
                                             <th scope="col">Lương</th>
                                             <th scope="col">Chức vụ</th>
@@ -95,27 +118,36 @@
 
                 <%- include('./partials/foot'); %>
                     <script type="module">
-                        document.getElementById('btnSave').addEventListener('click', ManageStaff)
+                        import showToast from '../public/js/toast.js'
                         import axiosApiInstance from '../public/js/interceptor.js'
                         // import socket from '../public/js/socket.js'
                         import axios from '../public/js/axios.js';
+                        document.getElementById('btnSave').addEventListener('click', ManageStaff);
+                       
                         var tableBody = document.getElementById('table-body');
                         (async () => {
                             const data = (await axiosApiInstance.get('/api/v1/admin/staff/get')).data.data;
                             data.forEach(function (item, index) {
                                 insert(item, index)
                             });
-                        })().catch(err => console.log(err))
+                        })().catch(err => showToast('Lỗi', err))
                         let idStaff = 0
                         function insert(item, index) {
                             var row = document.createElement('tr');
                             var idCell = document.createElement('td');
                             idCell.textContent = index + 1;
                             row.appendChild(idCell);
-
+                            
                             var nameCell = document.createElement('td');
                             nameCell.textContent = item.staffs[0]?.name;
                             row.appendChild(nameCell);
+                            var imgCell = document.createElement('td');
+                            imgCell.setAttribute('style',"height: 100px;")
+                            var imgChild = document.createElement('img');
+                            imgChild.setAttribute('class',"rounded-circle img-fluid h-100");
+                            imgChild.setAttribute('src',item.staffs[0].avatar)
+                            imgCell.appendChild(imgChild)
+                            row.appendChild(imgCell);
 
                             var phoneCell = document.createElement('td');
                             phoneCell.textContent = item?.staffs[0]?.phone;
@@ -169,6 +201,7 @@
                             let phone = document.getElementById('phone').value;
                             let salary = document.getElementById('salary').value;
                             let role = document.getElementById('role').value;
+                            let file = document.getElementById('file').files[0]
                             const formData = new FormData();
                             formData.append('username', user_name);
                             formData.append('password', password);
@@ -176,20 +209,33 @@
                             formData.append('phone', phone);
                             formData.append('salary', salary);
                             formData.append('role', role);
-                            if (idStaff == 0) {
+                            formData.append('file', file);
+                            formData.append('id', idStaff)
+                            if (idStaff != 0) {
                                 (async () => {
-                                    const data = (await axiosApiInstance.post(`/api/v1/admin/staff/create`, formData,
-                                        { headers: { "Content-Type": "multipart/form-data" } })).data.data
-                                    console.log(data)
+                                    let data = (await axiosApiInstance.post(`/api/v1/admin/staff/modify`, formData,
+                                        { headers: { "Content-Type": "multipart/form-data" } })).data
+                                    showToast('Thông báo', data.message)
                                 })().catch(err => {
-
-                                    alert('Có lỗi')
-                                })
+                                    showToast('Lỗi', err)
+                                }).finally(() => idStaff = 0)
                             }
                             else {
-                                
+                                document.getElementById('username').value = "";
+                                document.getElementById('password').value = "";
+                                document.getElementById('name').value = "";
+                                document.getElementById('phone').value = "";
+                                document.getElementById('salary').value = "";
+                                (async () => {
+                                    const data = (await axiosApiInstance.post(`/api/v1/admin/staff/create`, formData,
+                                        { headers: { "Content-Type": "multipart/form-data" } })).data
+                                    showToast('Thông báo', data.message)
+                                })().catch(err => {
+                                    showToast('Lỗi', err)
+                                })
                             }
                         }
+
                     </script>
     </body>
 
