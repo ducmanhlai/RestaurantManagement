@@ -2,7 +2,7 @@ var DataTypes = require("sequelize").DataTypes;
 var _account = require("./account");
 var _activity_login = require("./activity_login");
 var _bill = require("./bill");
-var _menu = require("./menu");
+var _food = require("./food");
 var _order = require("./order");
 var _order_detail = require("./order_detail");
 var _role = require("./role");
@@ -15,7 +15,7 @@ function initModels(sequelize) {
   var account = _account(sequelize, DataTypes);
   var activity_login = _activity_login(sequelize, DataTypes);
   var bill = _bill(sequelize, DataTypes);
-  var menu = _menu(sequelize, DataTypes);
+  var food = _food(sequelize, DataTypes);
   var order = _order(sequelize, DataTypes);
   var order_detail = _order_detail(sequelize, DataTypes);
   var role = _role(sequelize, DataTypes);
@@ -32,8 +32,8 @@ function initModels(sequelize) {
   account.hasMany(order, { as: "orders", foreignKey: "id_staff"});
   staff.belongsTo(account, { as: "id_account_account", foreignKey: "id_account"});
   account.hasMany(staff, { as: "staffs", foreignKey: "id_account"});
-  order_detail.belongsTo(menu, { as: "id_dish_menu", foreignKey: "id_dish"});
-  menu.hasMany(order_detail, { as: "order_details", foreignKey: "id_dish"});
+  order_detail.belongsTo(food, { as: "id_dish_food", foreignKey: "id_dish"});
+  food.hasMany(order_detail, { as: "order_details", foreignKey: "id_dish"});
   bill.belongsTo(order, { as: "id_order_order", foreignKey: "id_order"});
   order.hasMany(bill, { as: "bills", foreignKey: "id_order"});
   order_detail.belongsTo(order, { as: "id_order_order", foreignKey: "id_order"});
@@ -44,14 +44,14 @@ function initModels(sequelize) {
   status_order.hasMany(order_detail, { as: "order_details", foreignKey: "status"});
   order.belongsTo(table, { as: "table_table", foreignKey: "table"});
   table.hasMany(order, { as: "orders", foreignKey: "table"});
-  menu.belongsTo(type_dish, { as: "type_type_dish", foreignKey: "type"});
-  type_dish.hasMany(menu, { as: "menus", foreignKey: "type"});
+  food.belongsTo(type_dish, { as: "type_type_dish", foreignKey: "type"});
+  type_dish.hasMany(food, { as: "foods", foreignKey: "type"});
 
   return {
     account,
     activity_login,
     bill,
-    menu,
+    food,
     order,
     order_detail,
     role,
