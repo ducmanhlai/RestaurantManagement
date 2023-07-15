@@ -13,7 +13,7 @@ export default function socket(server){
               next(new Error("not authorized"));
           }
           socket.auth = true;
-          console.log(socket.auth)
+         
       })
       });
       setTimeout(()=>{
