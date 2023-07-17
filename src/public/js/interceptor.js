@@ -42,7 +42,7 @@ axiosApiInstance.interceptors.response.use(
           window.location.reload();
         } else {
           localStorage.clear();
-          window.location.href = "/login";
+          window.location.href = "/view/login";
         }
       }
     } else {
