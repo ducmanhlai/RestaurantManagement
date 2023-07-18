@@ -10,5 +10,5 @@ class ListOrder {
     getOrders() {
       return this.orders;
     }
-    
   }
+export default new ListOrder

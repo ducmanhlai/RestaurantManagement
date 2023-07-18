@@ -1,8 +1,9 @@
 import { Server } from "socket.io";
 import  jwt  from "jsonwebtoken";
-import auth from '../middleware/authenJWT';
 import { createOrder } from "service/order";
-export default function socket(server){
+import listOrder from "service/listOrder";
+
+export default function socket(server){ 
     const io = new Server(server);
     io.on('connection', function(socket){
       socket.auth = false;
@@ -19,6 +20,9 @@ export default function socket(server){
       });
       socket.on('createOrder',data=>{
         createOrder(data,socket).catch(err=>{console.log(err)})
+      })
+      socket.on('getListOrder',data=>{
+        socket.emit('getListOrder',listOrder.getOrders())
       })
       setTimeout(()=>{
         console.log(socket.auth)

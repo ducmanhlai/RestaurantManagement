@@ -6,7 +6,6 @@ socket.on('connect', function(){
     window.location.href= '/view/login'
   })
 });
-  
   socket.on("disconnect", () => {
     console.log(socket.id); 
 });
