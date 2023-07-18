@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 import  jwt  from "jsonwebtoken";
-import auth from '../middleware/authenJWT'
+import auth from '../middleware/authenJWT';
+import { createOrder } from "service/order";
 export default function socket(server){
     const io = new Server(server);
     io.on('connection', function(socket){
@@ -11,10 +12,14 @@ export default function socket(server){
               console.log(err);
               socket.emit("err",err)
           }
+          console.log(socket.auth)
           socket.auth = true;
+          socket.emit('authenticate','Xác thực thành công')
       })
-      
       });
+      socket.on('createOrder',data=>{
+        createOrder(data,socket).catch(err=>{console.log(err)})
+      })
       setTimeout(()=>{
         console.log(socket.auth)
       },3000)
