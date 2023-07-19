@@ -22,6 +22,7 @@ async function createOrder(order, socket) {
             }
         })
         listOrder.addOrder({ ...newOrder, detail: orderDetail });
+        console.log('call')
         socket.broadcast.emit('createOrder', { order: { ...newOrder, detail: orderDetail }, code: 0 })
     } catch (error) {
         console.log(error)
