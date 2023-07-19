@@ -30,6 +30,7 @@ auth.authenUser = (req, res, next) => {
             console.log(err);
             return res.sendStatus(403)
         }
+        req.user = { ...data }
         next()
     })
 }
@@ -51,17 +52,16 @@ auth.authenAdmin = (req, res, next) => {
         next();
     })
 }
-auth.isLogin = (socket,next) => {
-  
+auth.isLogin = (socket, next) => {
+
     console.log(socket.request.query)
     next();
     try {
         var token = socket.request.query.token;
-       
     } catch (error) {
-        next(new Error("not authorized",error));
+        next(new Error("not authorized", error));
     }
-   
+
 }
 
 module.exports = auth

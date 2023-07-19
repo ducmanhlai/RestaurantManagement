@@ -1,21 +1,29 @@
 import { Server } from "socket.io";
 import  jwt  from "jsonwebtoken";
-import auth from '../middleware/authenJWT'
-export default function socket(server){
+import { createOrder } from "service/order";
+import listOrder from "service/listOrder";
+
+export default function socket(server){ 
     const io = new Server(server);
     io.on('connection', function(socket){
       socket.auth = false;
       socket.on('authenticate', function(data){
-        // check data được send tới client
         jwt.verify(data.token, process.env.ACCESS_KEY, (err, data) => {
           if (err) {
               console.log(err);
-              next(new Error("not authorized"));
+              socket.emit("err",err)
           }
-          socket.auth = true;
           console.log(socket.auth)
+          socket.auth = true;
+          socket.emit('authenticate','Xác thực thành công')
       })
       });
+      socket.on('createOrder',data=>{
+        createOrder(data,socket).catch(err=>{console.log(err)})
+      })
+      socket.on('getListOrder',data=>{
+        socket.emit('getListOrder',listOrder.getOrders())
+      })
       setTimeout(()=>{
         console.log(socket.auth)
       },3000)
