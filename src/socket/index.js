@@ -19,7 +19,7 @@ export default function socket(server){
       })
       });
       socket.on('createOrder',data=>{
-        createOrder(data,socket).catch(err=>{console.log(err)})
+        createOrder(data,io).catch(err=>{console.log(err)})
       })
       socket.on('getListOrder',data=>{
         socket.emit('getListOrder',listOrder.getOrders())
