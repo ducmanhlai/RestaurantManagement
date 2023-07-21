@@ -15,7 +15,7 @@
                         <%- include('./partials/navbar'); %>
                             <div class="container-fluid">
                                 <span>Danh sách order</span>
-                                <table class="table table-bordered">
+                                <table class="table table-bordered" id="orderTable">
                                     <thead>
                                         <tr>
                                             <th scope="col">ID</th>
@@ -23,17 +23,19 @@
                                             <th scope="col">Thành tiền</th>
                                             <th scope="col">Thời gian</th>
                                             <th scope="col">Trạng thái</th>
-                                            <th scope="col">Xem chi tiết</th>
+                                            <th scope="col">Tùy chọn</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="orderTableBody">
                                         <tr>
                                             <th scope="row">1</th>
                                             <td>1</td>
                                             <td>50 000đ</td>
                                             <td>11:11 23/07/2022</td>
                                             <td>Đã hoàn thành</td>
-                                            <td><button type="button" class="btn btn-info">Nhấn</button></td>
+                                            <td class="d-flex justify-content-around"><button type="button" class="btn btn-info">Nhấn</button>
+                                                <button type="button" class="btn btn-info">Tính tiền</button>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -56,7 +58,7 @@
                     <i class="fas fa-angle-up"></i>
                 </a>
                 <%- include('./partials/foot'); %>
-                    <script type="module">
+                    <!-- <script type="module">
                         import axiosApiInstance from '../public/js/interceptor.js'
                         import axios from '../public/js/axios.js';
                         import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
@@ -68,11 +70,16 @@
                             })
                             socket.on('createOrder', (data) => {
                             })
+                            socket.emit('getListOrder')
+                            socket.on('getListOrder',data=>{
+                                renderTable(data)
+                            })
                         });
                         socket.on("disconnect", () => {
                             console.log(socket.id);
                         });
-                    </script>
+                    </script> -->
+                    <script type="module" src="../public/js/home.js"></script>
     </body>
 
 </html>
