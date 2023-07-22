@@ -14,5 +14,8 @@ class home_controller {
     login(req,res){
         res.render('login')
     }
+    createOrder(req,res){
+        res.render('createOrder')
+    }
 }
 export default new  home_controller()
