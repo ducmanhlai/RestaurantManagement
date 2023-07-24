@@ -10,7 +10,7 @@ async function createOrder(order, socket) {
             time: getCurrentTimeInVietnam(),
             table: order.table,
             note: order.note,
-            paid: false
+            status: 1
         }
         const orderDetail = order.detail.map(item => {
             return {
@@ -29,6 +29,9 @@ async function createOrder(order, socket) {
         socket.emit('createOrder', { code: 1 })
     }
 
+}
+async function updateOrder(order, socket) {
+   listOrder.update(order.order)
 }
 async function saveToDB(order) {
     // const id_staff = order.id_staff;
@@ -49,13 +52,13 @@ async function saveToDB(order) {
 }
 function getCurrentTimeInVietnam() {
     const currentDate = new Date();
-  
+
     // Chuyển đổi múi giờ từ UTC (đơn vị: phút) sang múi giờ Việt Nam (UTC+7, đơn vị: phút)
     const vietnamTimeZoneOffset = 7 * 60; // UTC+7
-  
+
     // Lấy thời gian hiện tại ở múi giờ Việt Nam (điều chỉnh thời gian dựa trên chênh lệch múi giờ)
     const currentTimeInVietnam = new Date(currentDate.getTime() + vietnamTimeZoneOffset * 60000);
-  
+
     return currentTimeInVietnam;
-  }
-export { createOrder }
+}
+export { createOrder,updateOrder }
