@@ -8,7 +8,6 @@ class ListOrder {
 
   addOrder(order, detail) {
     this.orders.push(order);
-    console.log(detail)
     detail.forEach(element => {
       this.detail.push(element)
     });
@@ -37,8 +36,26 @@ class ListOrder {
       })
     })
   }
-  updateStatusDetail(id) {
-
+  updateStatusDetail(id, status) {
+    this.detail = [...this.detail.map(item => {
+      if (item.id.localeCompare(id) == 0) {
+        return {
+          ...item,
+          status: status
+        }
+      }
+      return item
+    })]
+  }
+  updateStatusOrder(id, status) {
+    this.orders = [...this.orders.map(item => {
+      if (item.id.localeCompare(id) == 0) {
+        return {
+          ...item,
+          status: status
+        }
+      }
+    })]
   }
 }
 export default new ListOrder

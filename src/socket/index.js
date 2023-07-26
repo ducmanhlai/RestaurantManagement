@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 import jwt from "jsonwebtoken";
-import { createOrder, updateOrderDetail } from "service/order";
+import { createOrder, updateOrderDetail, updateStatusDetail, updateStatusOrder } from "service/order";
 import listOrder from "service/listOrder";
 
 export default function socket(server) {
@@ -25,10 +25,10 @@ export default function socket(server) {
       updateOrderDetail(data, io)
     })
     socket.on('updateStatusDetail', data => {
-
+      updateStatusDetail(data,io)
     })
     socket.on('updateStatusOrder', data => {
-
+      updateStatusOrder(data,io)
     })
     socket.on('getListOrder', data => {
       socket.emit('getListOrder', listOrder.getOrders())

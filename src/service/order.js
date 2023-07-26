@@ -23,8 +23,8 @@ async function createOrder(order, socket) {
                 price: item.price
             }
         })
-    
-        listOrder.addOrder(newOrder,orderDetail);
+
+        listOrder.addOrder(newOrder, orderDetail);
         console.log('call')
         socket.emit('createOrder', { order: { ...newOrder, detail: orderDetail }, code: 0 })
     } catch (error) {
@@ -34,7 +34,13 @@ async function createOrder(order, socket) {
 
 }
 async function updateOrderDetail(order, socket) {
-    listOrder.addDetail(order.id,order.detail)
+    listOrder.addDetail(order.id, order.detail)
+}
+async function updateStatusDetail(detail, socket) {
+    listOrder.updateStatusDetail(detail.id, detail.status)
+}
+async function updateStatusOrder(order, socket) {
+    listOrder.updateStatusOrder(order.id, order.status)
 }
 async function saveToDB(order) {
     // const id_staff = order.id_staff;
@@ -64,4 +70,4 @@ function getCurrentTimeInVietnam() {
 
     return currentTimeInVietnam;
 }
-export { createOrder, updateOrderDetail,getCurrentTimeInVietnam }
+export { createOrder, updateOrderDetail, getCurrentTimeInVietnam, updateStatusOrder, updateStatusDetail }
