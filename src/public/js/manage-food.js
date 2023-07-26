@@ -43,9 +43,9 @@ function insert(item, index) {
     nameCell.textContent = item.name;
     row.appendChild(nameCell);
 
-    var phoneCell = document.createElement('td');
-    phoneCell.textContent = item?.price;
-    row.appendChild(phoneCell);
+    var priceCell = document.createElement('td');
+    priceCell.textContent = item?.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});;
+    row.appendChild(priceCell);
 
 
     var btn = document.createElement('td');

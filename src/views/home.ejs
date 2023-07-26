@@ -2,39 +2,39 @@
 <html lang="en">
 <%- include('./partials/head'); %>
 
+
     <body id="page-top">
         <!-- Page Wrapper -->
         <div id="wrapper">
 
             <%- include('./partials/menu'); %>
                 <div id="content-wrapper" class="d-flex flex-column">
-
                     <!-- Main Content -->
                     <div id="content">
-
                         <%- include('./partials/navbar'); %>
                             <div class="container-fluid">
-                                <span>Danh sách order</span>
-                                <table class="table table-bordered">
+                                <div>
+                                    <button type="button" class="btn btn-labeled btn-info" id="btn-add"
+                                        onclick='ModifyScreen()'>
+                                        <span class="btn-label"><i class="fa fa-plus"></i></span> Thêm order
+                                    </button>
+                                    <button type="button" class="btn btn-labeled btn-info" id="btn-add"
+                                        data-bs-toggle="modal" data-bs-target='#exampleModal'>
+                                        <span class="btn-label"><i class="fa fa-list fa-beat-fade"></i></span>Danh sách order
+                                    </button>
+                                </div>
+                                <table class="table table-bordered " id="orderTable" cellspacing="0" width="100%">
                                     <thead>
                                         <tr>
-                                            <th scope="col">ID</th>
-                                            <th scope="col">Bàn</th>
-                                            <th scope="col">Thành tiền</th>
-                                            <th scope="col">Thời gian</th>
-                                            <th scope="col">Trạng thái</th>
-                                            <th scope="col">Xem chi tiết</th>
+                                            <th class="th-sm">STT</th>
+                                            <th class="th-sm">Bàn</th>
+                                            <th class="th-sm">Thành tiền</th>
+                                            <th class="th-sm">Thời gian</th>
+                                            <th class="th-sm">Trạng thái</th>
+                                            <th class="th-sm">Tùy chọn</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>1</td>
-                                            <td>50 000đ</td>
-                                            <td>11:11 23/07/2022</td>
-                                            <td>Đã hoàn thành</td>
-                                            <td><button type="button" class="btn btn-info">Nhấn</button></td>
-                                        </tr>
+                                    <tbody id="orderTableBody">
                                     </tbody>
                                 </table>
                             </div>
@@ -56,23 +56,24 @@
                     <i class="fas fa-angle-up"></i>
                 </a>
                 <%- include('./partials/foot'); %>
-                    <script type="module">
-                        import axiosApiInstance from '../public/js/interceptor.js'
-                        import axios from '../public/js/axios.js';
-                        import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
-                        const socket = io();
-                        socket.on('connect', function () {
-                            socket.emit('authenticate', { token: localStorage.getItem('accessToken') });
-                            socket.on('err', (err) => {
-                                window.location.href = '/view/login'
-                            })
-                            socket.on('createOrder', (data) => {
-                            })
-                        });
-                        socket.on("disconnect", () => {
-                            console.log(socket.id);
-                        });
+                    <script>
+                        function ModifyScreen(){
+                            window.location.href='/view/create-order'
+                        }
                     </script>
+                    <script type="module" src="../public/js/home.js"></script>
+                    <!-- <script>
+                        $(document).ready(function () {
+                            $('#orderTable').DataTable({
+                                "aaSorting": [],
+                                columnDefs: [{
+                                    orderable: false,
+                                    targets: 3
+                                }]
+                            });
+                            $('.dataTables_length').addClass('bs-select');
+                        });
+                    </script> -->
     </body>
 
 </html>
