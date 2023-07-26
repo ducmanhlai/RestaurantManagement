@@ -7,4 +7,6 @@ home_router.get('/food',home_controller.food);
 home_router.get('/staff',home_controller.staff);
 home_router.get('/statistics',home_controller.statistics);
 home_router.get('/login',home_controller.login)
+home_router.get('/bill',home_controller.bill)
+home_router.get('/bill_pdf',home_controller.bill_pdf)
 export default home_router;

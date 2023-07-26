@@ -1,3 +1,5 @@
+import createBill from "service/createBill"
+
 class home_controller {
     home(req, res) {
         res.render('home')
@@ -16,6 +18,13 @@ class home_controller {
     }
     createOrder(req,res){
         res.render('createOrder')
+    }
+    bill(req,res){
+        res.render('bill')
+        createBill()
+    }
+    bill_pdf(req,res){
+        res.render('bill')
     }
 }
 export default new  home_controller()

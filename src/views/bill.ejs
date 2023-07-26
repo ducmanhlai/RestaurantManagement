@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/public/css/bill.css" rel="stylesheet" type="text/css">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .bill {
+            width: 250px;
+            box-shadow: 0 0 3px #aaa;
+            padding: 10px 10px;
+            box-sizing: border-box;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .table .header {
+            border-top: 2px dashed #000;
+            border-bottom: 2px dashed #000;
+        }
+
+        .table {
+            text-align: left;
+        }
+
+        .table .total td:first-of-type {
+            border-top: none;
+            border-bottom: none;
+        }
+
+        .table .total td {
+            border-top: 2px dashed #000;
+            border-bottom: 2px dashed #000;
+        }
+
+        .table .net-amount td:first-of-type {
+            border-top: none;
+        }
+
+        .table .net-amount td {
+            border-top: 2px dashed #000;
+        }
+
+        /* .table .net-amount{
+  border-bottom: 2px dashed #000;
+} */
+        @media print {
+
+            .hidden-print,
+            .hidden-print * {
+                display: none !important;
+            }
+        }
+    </style>
+    <div class="bill">
+        <div class="brand">
+            Quán cơm
+        </div>
+        <div class="address">
+            93 Man Thiện <br> SDT - 0397007579
+        </div>
+
+        <div>Hóa đơn bán hàng </div>
+        <div class="bill-details">
+            <div class="flex justify-between">
+                <div>BILL NO: 091</div>
+                <div>TABLE NO: 091</div>
+            </div>
+            <div class="flex justify-between">
+                <div>BILL DATE: 10/Mar/2022</div>
+                <div>TIME: 14:10</div>
+            </div>
+        </div>
+        <table class="table">
+            <tr class="header">
+                <th>
+                    Món ăn
+                </th>
+                <th>
+                    Giá
+                </th>
+                <th>
+                    SL
+                </th>
+                <th>
+                    Thành tiền
+                </th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>Cơm gà</td>
+                    <td>45 000</td>
+                    <td>2</td>
+                    <td>90000</td>
+                </tr>
+                <tr>
+                    <td>Cơm gà</td>
+                    <td>45 000</td>
+                    <td>2</td>
+                    <td>90000</td>
+                </tr>
+                <tr>
+                    <td>Cơm gà</td>
+                    <td>45 000</td>
+                    <td>2</td>
+                    <td>90000</td>
+                </tr>
+                <tr class="net-amount">
+                    <td></td>
+                    <td>Tổng cộng</td>
+                    <td></td>
+                    <td>385</td>
+                </tr>
+                <tr class="">
+                    <td></td>
+                    <td>Tiền mặt</td>
+                    <td></td>
+                    <td>385</td>
+                </tr>
+                <tr class="">
+                    <td></td>
+                    <td>Trả lại</td>
+                    <td></td>
+                    <td>385</td>
+                </tr>
+            </tbody>
+        </table>
+        Phương thức thanh toán: tiền mặt<br>
+        <br>Nhân viên: Khứa Thị Mạnh<br>
+        Thank You ! Please visit again
+    </div>
+</body>
+
+</html>
