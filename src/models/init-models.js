@@ -8,6 +8,7 @@ var _order_detail = require("./order_detail");
 var _role = require("./role");
 var _staff = require("./staff");
 var _status_order = require("./status_order");
+var _status_order_detail = require("./status_order_detail");
 var _table = require("./table");
 var _type_dish = require("./type_dish");
 
@@ -21,6 +22,7 @@ function initModels(sequelize) {
   var role = _role(sequelize, DataTypes);
   var staff = _staff(sequelize, DataTypes);
   var status_order = _status_order(sequelize, DataTypes);
+  var status_order_detail = _status_order_detail(sequelize, DataTypes);
   var table = _table(sequelize, DataTypes);
   var type_dish = _type_dish(sequelize, DataTypes);
 
@@ -40,8 +42,10 @@ function initModels(sequelize) {
   order.hasMany(order_detail, { as: "order_details", foreignKey: "id_order"});
   account.belongsTo(role, { as: "role_role", foreignKey: "role"});
   role.hasMany(account, { as: "accounts", foreignKey: "role"});
-  order_detail.belongsTo(status_order, { as: "status_status_order", foreignKey: "status"});
-  status_order.hasMany(order_detail, { as: "order_details", foreignKey: "status"});
+  order.belongsTo(status_order, { as: "status_status_order", foreignKey: "status"});
+  status_order.hasMany(order, { as: "orders", foreignKey: "status"});
+  order_detail.belongsTo(status_order_detail, { as: "status_status_order_detail", foreignKey: "status"});
+  status_order_detail.hasMany(order_detail, { as: "order_details", foreignKey: "status"});
   order.belongsTo(table, { as: "table_table", foreignKey: "table"});
   table.hasMany(order, { as: "orders", foreignKey: "table"});
   food.belongsTo(type_dish, { as: "type_type_dish", foreignKey: "type"});
@@ -57,6 +61,7 @@ function initModels(sequelize) {
     role,
     staff,
     status_order,
+    status_order_detail,
     table,
     type_dish,
   };

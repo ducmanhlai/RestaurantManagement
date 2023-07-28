@@ -40,7 +40,6 @@ class ListOrder {
       else
         if (finish == count) this.updateStatusOrder(order.id, 4)
         else this.updateStatusOrder(order.id, 1)
-
     }
   }
   async getOrders() {
@@ -58,7 +57,7 @@ class ListOrder {
         id: item.id,
         id_order: id,
         quantity: item.quantity,
-        id_food: item.id_food,
+        id_dish: item.id_food,
         status: 1,
         price: item.price,
         time: getCurrentTimeInVietnam()
@@ -94,14 +93,14 @@ async function saveOrder(order) {
   const id_staff = order.id_staff;
   const time = new Date();
   const table = order.table;
-  let newOrder = await orderModel.create({ id_staff, time, table,note:order.note });
+  let newOrder = await orderModel.create({ id_staff, time, table, note: order.note, status: 1 });
   return newOrder
 }
 async function saveDetail(order, detail) {
   const newDetail = await detailModel.create({
     id_order: order.id,
     quantity: detail.quantity,
-    id_food: detail.id_food,
+    id_dish: detail.id_food,
     status: 1,
     price: detail.price,
     time: getCurrentTimeInVietnam()

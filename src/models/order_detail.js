@@ -31,13 +31,17 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'status_order',
+        model: 'status_order_detail',
         key: 'id'
       }
     },
     price: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    time: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
     sequelize,
