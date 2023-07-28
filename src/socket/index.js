@@ -33,6 +33,9 @@ export default function socket(server) {
     socket.on('getListOrder', data => {
       socket.emit('getListOrder', listOrder.getOrders())
     })
+    socket.on('payOrder',data=>{
+      io.emit('payOrder',data)
+    })
     // setTimeout(() => {
     //   console.log(socket.auth)
     // }, 3000)
