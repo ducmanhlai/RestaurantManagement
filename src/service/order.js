@@ -35,12 +35,15 @@ async function createOrder(order, socket) {
 }
 async function updateOrderDetail(order, socket) {
     listOrder.addDetail(order.id, order.detail)
+    socket.emit('getListOrder', listOrder.getOrders())
 }
 async function updateStatusDetail(detail, socket) {
     listOrder.updateStatusDetail(detail.id, detail.status)
+    socket.emit('getListOrder', listOrder.getOrders())
 }
 async function updateStatusOrder(order, socket) {
     listOrder.updateStatusOrder(order.id, order.status)
+    socket.emit('getListOrder', listOrder.getOrders())
 }
 async function saveToDB(order) {
     // const id_staff = order.id_staff;
