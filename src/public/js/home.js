@@ -9,9 +9,14 @@ socket.on('connect', function () {
     })
 });
 let numOrder = 0;
+var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
 socket.emit('getListOrder');
 socket.on('getListOrder',renderListOrder)
 socket.on('createOrder',(data)=>renderOrder(data.order))
+socket.on('payOrder',()=>{
+  myModal.show();
+  
+})
 socket.on("disconnect", () => {
     console.log(socket.id);
 });
