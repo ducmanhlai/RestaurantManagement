@@ -26,6 +26,18 @@ module.exports = function(sequelize, DataTypes) {
         model: 'table',
         key: 'id'
       }
+    },
+    note: {
+      type: DataTypes.STRING(200),
+      allowNull: true
+    },
+    status: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'status_order',
+        key: 'id'
+      }
     }
   }, {
     sequelize,
@@ -52,6 +64,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "table" },
+        ]
+      },
+      {
+        name: "fk_status_idx",
+        using: "BTREE",
+        fields: [
+          { name: "status" },
         ]
       },
     ]

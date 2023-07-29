@@ -5,27 +5,8 @@ const orderDetailModel = Model.order_detail;
 import listOrder from './listOrder';
 async function createOrder(order, socket) {
     try {
-        let newOrder = {
-            id: uuidv4(),
-            time: getCurrentTimeInVietnam(),
-            table: order.table,
-            note: order.note,
-            status: 1
-        }
-        const orderDetail = order.detail.map(item => {
-            return {
-                id: uuidv4(),
-                time: newOrder.time,
-                id_order: newOrder.id,
-                quantity: item.quantity,
-                id_food: item.id,
-                status: 1,
-                price: item.price
-            }
-        })
-
-        listOrder.addOrder(newOrder, orderDetail);
-        console.log('call')
+       
+       const {newOrder,orderDetail}= await listOrder.addOrder(order);
         socket.emit('createOrder', { order: { ...newOrder, detail: orderDetail }, code: 0 })
     } catch (error) {
         console.log(error)
@@ -34,31 +15,18 @@ async function createOrder(order, socket) {
 
 }
 async function updateOrderDetail(order, socket) {
-    listOrder.addDetail(order.id, order.detail)
+    await listOrder.addDetail(order.id, order.detail)
+    socket.emit('getListOrder', listOrder.getOrders())
 }
 async function updateStatusDetail(detail, socket) {
-    listOrder.updateStatusDetail(detail.id, detail.status)
+    await listOrder.updateStatusDetail(detail.id, detail.status)
+    socket.emit('getListOrder', listOrder.getOrders())
 }
 async function updateStatusOrder(order, socket) {
-    listOrder.updateStatusOrder(order.id, order.status)
+    await listOrder.updateStatusOrder(order.id, order.status)
+    socket.emit('getListOrder', listOrder.getOrders())
 }
-async function saveToDB(order) {
-    // const id_staff = order.id_staff;
-    // const time = new Date();
-    // const table = order.table;
-    // let newOrder = await orderModel.create({ id_staff, time, table });
-    // console.log(newOrder.id)
-    // const orderDetail = order.detail.map(item=>{
-    //     return {
-    //         id_order: newOrder.id,
-    //         quantity: item.quantity,
-    //         id_dish:item.id_dish,
-    //         status:1,
-    //         price:item.price
-    //     }
-    // })
-    // const listOrderDetail = await orderDetailModel.bulkCreate([...orderDetail]);
-}
+
 function getCurrentTimeInVietnam() {
     const currentDate = new Date();
 
