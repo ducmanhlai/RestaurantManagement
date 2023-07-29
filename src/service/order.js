@@ -7,7 +7,6 @@ async function createOrder(order, socket) {
     try {
        
        const {newOrder,orderDetail}= await listOrder.addOrder(order);
-        console.log('call')
         socket.emit('createOrder', { order: { ...newOrder, detail: orderDetail }, code: 0 })
     } catch (error) {
         console.log(error)
@@ -16,15 +15,15 @@ async function createOrder(order, socket) {
 
 }
 async function updateOrderDetail(order, socket) {
-    listOrder.addDetail(order.id, order.detail)
+    await listOrder.addDetail(order.id, order.detail)
     socket.emit('getListOrder', listOrder.getOrders())
 }
 async function updateStatusDetail(detail, socket) {
-    listOrder.updateStatusDetail(detail.id, detail.status)
+    await listOrder.updateStatusDetail(detail.id, detail.status)
     socket.emit('getListOrder', listOrder.getOrders())
 }
 async function updateStatusOrder(order, socket) {
-    listOrder.updateStatusOrder(order.id, order.status)
+    await listOrder.updateStatusOrder(order.id, order.status)
     socket.emit('getListOrder', listOrder.getOrders())
 }
 
