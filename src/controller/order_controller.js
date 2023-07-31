@@ -1,8 +1,11 @@
+import bill from 'models/bill';
+import { saveBill } from 'service/bill';
 import Model from '../config/sequelize';
 class order_controller {
     async getOrder(req, res) {
         try {
             const id = req.query?.id || 0;
+            const staff = req.query?.staff || 1;
             if (id == 0) {
                 const listType = await Model.order.findAll(
                     {
@@ -44,9 +47,11 @@ class order_controller {
                         attributes: ['id','time','table'],
                     }
                     )
+              let bill =(await saveBill(order,staff)).dataValues;
+            
                 res.status(200).send({
                     message: 'Lấy dữ liệu thành công',
-                    data: order
+                    data: {...order.dataValues,id:bill.id,time:bill.time}
                 })
             }
         } catch (error) {

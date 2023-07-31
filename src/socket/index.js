@@ -2,7 +2,7 @@ import { Server } from "socket.io";
 import jwt from "jsonwebtoken";
 import { createOrder, updateOrderDetail, updateStatusDetail, updateStatusOrder } from "service/order";
 import listOrder from "service/listOrder";
-import createBill from "service/createBill";
+import { createBill } from "service/bill";
 
 export default function socket(server) {
   const io = new Server(server);

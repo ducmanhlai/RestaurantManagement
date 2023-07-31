@@ -4,7 +4,6 @@ const table_element = document.getElementById('table-no');
 const date_element = document.getElementById('date');
 const time_element = document.getElementById('time');
 const detail_element = document.getElementById('table-detail');
-const total_element = document.getElementById('total');
 const staff_element = document.getElementById('staff');
 function formatTimeISO8601ToLocale(timeString) {
     return new Date(timeString).toLocaleString('vi-VN', {
@@ -38,7 +37,6 @@ function addFooterTable(title,num,className='',id='') {
    <td>${num.toLocaleString('vi-VN', {style : 'currency', currency : 'VND'})}</td>
  `;
     detail_element.appendChild(newRow);
-
 }
 function renderDetail(order) {
     const newRow = document.createElement('tr');
