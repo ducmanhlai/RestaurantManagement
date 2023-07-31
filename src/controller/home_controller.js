@@ -1,30 +1,30 @@
 import createBill from "service/createBill"
+import Model from '../config/sequelize';
 
 class home_controller {
     home(req, res) {
         res.render('home')
     }
-    food(req,res){
+    food(req, res) {
         res.render('food')
     }
-    staff(req,res){
+    staff(req, res) {
         res.render('staff')
     }
-    statistics(req,res){
+    statistics(req, res) {
         res.render('statistics')
     }
-    login(req,res){
+    login(req, res) {
         res.render('login')
     }
-    createOrder(req,res){
+    createOrder(req, res) {
         res.render('createOrder')
     }
-    bill(req,res){
+    bill(req, res) {
         res.render('bill')
-        createBill()
     }
-    bill_pdf(req,res){
+    async bill_pdf(req, res) {
         res.render('bill')
     }
 }
-export default new  home_controller()
+export default new home_controller()

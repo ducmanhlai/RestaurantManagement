@@ -1,23 +1,19 @@
 import Model from '../config/sequelize';
 import bcrypt from 'bcrypt'
-import { createJWT } from 'config/jwt';
 import { Sequelize } from 'sequelize';
 import saveImg from 'service/saveImg';
 const account = Model.account;
 class admin_controller {
-
     async getStaff(req, res) {
         try {
             const id = req.query?.id || 0;
             if (id == 0) {
                 const listAcc = await account.findAll(
                     {
-
                         include: [{
                             model: Model.staff,
                             as: 'staffs'
                         },
-
                         {
                             model: Model.role,
                             as: 'role_role',
@@ -41,7 +37,6 @@ class admin_controller {
                             model: Model.staff,
                             as: 'staffs'
                         },
-
                         {
                             model: Model.role,
                             as: 'role_role',
