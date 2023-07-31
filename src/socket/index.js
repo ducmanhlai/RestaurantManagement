@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import jwt from "jsonwebtoken";
 import { createOrder, updateOrderDetail, updateStatusDetail, updateStatusOrder } from "service/order";
 import listOrder from "service/listOrder";
+import createBill from "service/createBill";
 
 export default function socket(server) {
   const io = new Server(server);
@@ -34,7 +35,8 @@ export default function socket(server) {
       socket.emit('getListOrder', listOrder.getOrders())
     })
     socket.on('payOrder',data=>{
-      io.emit('payOrder',data)
+      createBill(data.id)
+      // io.emit('payOrder',data)
     })
     // setTimeout(() => {
     //   console.log(socket.auth)

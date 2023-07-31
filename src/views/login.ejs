@@ -43,11 +43,14 @@
                         password
                     })).data
                     if(data.accessToken){
+                        localStorage.clear()
                         localStorage.setItem('accessToken',data.accessToken);
                         localStorage.setItem('refreshToken',data.refreshToken);
                         window.location.href= '/view/home'
                     }
+                    console.log(data)
                 }
+                
                 )().catch(err => {
                     console.log(err)
                 }).finally(() => console.log('xong'))

@@ -89,12 +89,11 @@
         <div>Hóa đơn bán hàng </div>
         <div class="bill-details">
             <div class="flex justify-between">
-                <div>BILL NO: 091</div>
-                <div>TABLE NO: 091</div>
+                <div id="bill-no">BILL NO: 091</div>
+                <div id="table-no">TABLE NO: 091</div>
             </div>
             <div class="flex justify-between">
-                <div>BILL DATE: 10/Mar/2022</div>
-                <div>TIME: 14:10</div>
+                <div id="date"></div>
             </div>
         </div>
         <table class="table">
@@ -112,49 +111,15 @@
                     Thành tiền
                 </th>
             </tr>
-            <tbody>
-                <tr>
-                    <td>Cơm gà</td>
-                    <td>45 000</td>
-                    <td>2</td>
-                    <td>90000</td>
-                </tr>
-                <tr>
-                    <td>Cơm gà</td>
-                    <td>45 000</td>
-                    <td>2</td>
-                    <td>90000</td>
-                </tr>
-                <tr>
-                    <td>Cơm gà</td>
-                    <td>45 000</td>
-                    <td>2</td>
-                    <td>90000</td>
-                </tr>
-                <tr class="net-amount">
-                    <td></td>
-                    <td>Tổng cộng</td>
-                    <td></td>
-                    <td>385</td>
-                </tr>
-                <tr class="">
-                    <td></td>
-                    <td>Tiền mặt</td>
-                    <td></td>
-                    <td>385</td>
-                </tr>
-                <tr class="">
-                    <td></td>
-                    <td>Trả lại</td>
-                    <td></td>
-                    <td>385</td>
-                </tr>
+            <tbody id="table-detail">  
             </tbody>
         </table>
-        Phương thức thanh toán: tiền mặt<br>
-        <br>Nhân viên: Khứa Thị Mạnh<br>
-        Thank You ! Please visit again
+       Phương thức thanh toán: tiền mặt<br>
+       <div  id="staff" ></div><br>
+        <p>Thank You ! Please visit again</p>
     </div>
+     <%- include('./partials/foot'); %>
+    <script type="module" src="../public/js/bill.js"></script>
 </body>
 
 </html>

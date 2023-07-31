@@ -57,10 +57,10 @@ class ListOrder {
             finish += 1
         }
       }
-      if (cancel == count) this.updateStatusOrder(order.id, 3)
+      if (cancel == count) await  this.updateStatusOrder(order.id, 3)
       else
-        if (finish == count) this.updateStatusOrder(order.id, 4)
-      else this.updateStatusOrder(order.id, 1)
+        if (finish == count) await this.updateStatusOrder(order.id, 4)
+      else await this.updateStatusOrder(order.id, 1)
     }
   }
   getOrders() {
@@ -77,7 +77,7 @@ class ListOrder {
     newDetail.forEach(item => {
       this.detail.push(item)
     })
-    this.modifyStatus()
+    await this.modifyStatus()
   }
   async updateStatusDetail(id, status) {
     const detail = await detailModel.findByPk(id);
@@ -92,7 +92,7 @@ class ListOrder {
       }
       return item
     })]
-    this.modifyStatus()
+   await this.modifyStatus()
   }
   async updateStatusOrder(id, status) {
     const order = await orderModel.findByPk(id);
