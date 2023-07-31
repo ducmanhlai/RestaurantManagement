@@ -2,7 +2,6 @@ import axios from "./axios.js";
 const bill_element = document.getElementById('bill-no');
 const table_element = document.getElementById('table-no');
 const date_element = document.getElementById('date');
-const time_element = document.getElementById('time');
 const detail_element = document.getElementById('table-detail');
 const staff_element = document.getElementById('staff');
 function formatTimeISO8601ToLocale(timeString) {
@@ -13,8 +12,9 @@ function formatTimeISO8601ToLocale(timeString) {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const id = urlParams.get('id')
+    const staff = urlParams.get('staff')
     let total= 0
-    const order = (await axios.get(`/api/v1/order/get?id=${id}`)).data.data
+    const order = (await axios.get(`/api/v1/order/get?id=${id}&staff=${staff}`)).data.data
     bill_element.innerHTML = `Số hóa đơn: ${order.id}`
     table_element.innerHTML = `Bàn: ${order.table}`
     order.order_details.forEach(item => {
@@ -47,5 +47,4 @@ function renderDetail(order) {
    <td>${(order.price * order.quantity).toLocaleString('vi-VN', {style : 'currency', currency : 'VND'})}</td>
  `;
     detail_element.appendChild(newRow);
-
 }
