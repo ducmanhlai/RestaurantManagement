@@ -1,6 +1,8 @@
 import bill from 'models/bill';
 import { saveBill } from 'service/bill';
 import Model from '../config/sequelize';
+import listOrder from 'service/listOrder';
+import { Op } from 'sequelize';
 class order_controller {
     async getOrder(req, res) {
         try {
@@ -15,7 +17,12 @@ class order_controller {
                             include: {
                                 model: Model.food,
                                 as: 'id_dish_food',
-                                attributes: ['name']
+                                attributes: ['name'],
+                                where: {
+                                    status: {
+                                      [Op.ne]: 3
+                                    }
+                                  }
                             },
                             attributes: ['price', 'quantity']
                         },
@@ -35,6 +42,7 @@ class order_controller {
                 status: 4
             })
             order.save()
+            listOrder.updateStatusOrder(order.dataValues.id,4)
             res.status(200).send({
                 message: 'Lấy dữ liệu thành công',
                 data: { ...order.dataValues, id: bill.id, time: bill.time }
