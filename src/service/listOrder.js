@@ -32,6 +32,7 @@ class ListOrder {
       const [order, detail] = await Promise.all(listInit)
       this.orders = [...order.map(item => item.dataValues)]
       this.detail = [...detail.map(item => item.dataValues)]
+      console.log(this.orders)
     })()
   }
   async addOrder(order) {
@@ -66,7 +67,9 @@ class ListOrder {
   getOrders() {
     return this.orders.map(item => {
       return {
-        ...item, detail: [...this.detail.filter(i => {
+        ...item,
+        status:item.status, 
+        detail: [...this.detail.filter(i => {
           return i.id_order == item.id
         })]
       }

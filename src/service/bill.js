@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 import Model from '../config/sequelize'
 function createBill(id,staff) {
-  (async () => {
+  return async () => {
     try {
       const browser = await puppeteer.launch({ headless: false });
 
@@ -22,7 +22,7 @@ function createBill(id,staff) {
     } catch (error) {
       console.log(error)
     }
-  })();
+  }
 }
 async function saveBill(order, staff) {
   let total = 0;

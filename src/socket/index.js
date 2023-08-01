@@ -26,16 +26,17 @@ export default function socket(server) {
       updateOrderDetail(data, io)
     })
     socket.on('updateStatusDetail', data => {
-      updateStatusDetail(data,io)
+      updateStatusDetail(data, io)
     })
     socket.on('updateStatusOrder', data => {
-      updateStatusOrder(data,io)
+      updateStatusOrder(data, io)
     })
     socket.on('getListOrder', data => {
       socket.emit('getListOrder', listOrder.getOrders())
     })
-    socket.on('payOrder',data=>{
-      createBill(data.id,data.staff)
+    socket.on('payOrder', data => {
+      createBill(data.id, data.staff)().finally(()=>io.emit('getListOrder', listOrder.getOrders())
+      )
       // io.emit('payOrder',data)
     })
     // setTimeout(() => {
