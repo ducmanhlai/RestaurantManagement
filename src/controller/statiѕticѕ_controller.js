@@ -27,8 +27,6 @@ class statistics_controller {
             const type = req.query?.type || 'year';
             const year = req.query?.year || 2023;
             let month = req.query?.month || '1';
-
-            // console.log( new Date(`${year}-${month}-01`))
             const option = type.localeCompare('month') == 0 ? {
                 where: {
                     time: {
@@ -62,7 +60,6 @@ class statistics_controller {
                 data: []
             })
         }
-
     }
     async getTopSellingProducts(req, res) {
         const from = req.query?.from ? new Date(req.query?.from) : new Date(null)

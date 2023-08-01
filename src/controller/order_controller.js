@@ -18,12 +18,12 @@ class order_controller {
                                 model: Model.food,
                                 as: 'id_dish_food',
                                 attributes: ['name'],
-                                where: {
-                                    status: {
-                                      [Op.ne]: 3
-                                    }
-                                  }
                             },
+                            where: {
+                                status: {
+                                  [Op.ne]: 3
+                                }
+                              },
                             attributes: ['price', 'quantity']
                         },
                         {
@@ -36,13 +36,8 @@ class order_controller {
                     attributes: ['id', 'time', 'table'],
                 }
             )
+            await listOrder.updateStatusOrder(order.dataValues.id,4)
             let bill = (await saveBill(order, staff)).dataValues;
-            order.set({
-                ...order,
-                status: 4
-            })
-            order.save()
-            listOrder.updateStatusOrder(order.dataValues.id,4)
             res.status(200).send({
                 message: 'Lấy dữ liệu thành công',
                 data: { ...order.dataValues, id: bill.id, time: bill.time }
