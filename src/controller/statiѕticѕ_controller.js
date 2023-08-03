@@ -3,7 +3,7 @@ import { Op, col, } from 'sequelize';
 import { fn, literal } from 'sequelize';
 // import sequelize from '../config/sequelize';
 class statistics_controller {
-    async getTurnoverInDay(req, res) {
+    async getgetRevenueInDay(req, res) {
         const TODAY_START = new Date().setHours(0, 0, 0, 0);
         const NOW = new Date();
         const orders = await Model.bill.findAll({
@@ -13,20 +13,18 @@ class statistics_controller {
                     [Op.lt]: NOW
                 }
             },
-            order: [
-                ['time', 'ASC'],
-            ]
+            attributes: [[fn('SUM', col('total')), 'total']]
         });
         res.status(200).send({
             message: 'Lấy dữ liệu thành công',
             data: orders
         })
     }
-    async getTurnover(req, res) {
+    async getRevenue(req, res) {
         try {
-            const type = req.query?.type || 'year';
-            const year = req.query?.year || 2023;
-            let month = req.query?.month || '1';
+            const type = req.query?.month ?'month' : 'year';
+            const year = req.query?.year || new Date().getFullYear();
+            let month = req.query?.month || new Date().getMonth()+1;
             const option = type.localeCompare('month') == 0 ? {
                 where: {
                     time: {
@@ -84,7 +82,36 @@ class statistics_controller {
                 group: ['id_dish'],
                 order: [
                     ['num', 'DESC'],
-                ]
+                ],
+                limit: 5
+            }
+        )
+        res.status(200).send({
+            message: 'Lấy dữ liệu thành công',
+            data: topSelling
+        })
+    }
+    async getTopRenueveProducts(req,res)
+    {
+        const from = req.query?.from ? new Date(req.query?.from) : new Date(null)
+        const to = req.query?.to ? new Date(req.query?.to) : new Date()
+        const topSelling = await Model.order_detail.findAll(
+            {
+                where: {
+                    status: {
+                        [Op.ne]: 3
+                    },
+                    time: {
+                        [Op.gt]: from,
+                        [Op.lt]: to
+                    }
+                },
+                attributes: [[fn('SUM', col('price')), 'num'],'id_dish',[fn('SUM', col('quantity')), 'quantity']],
+                group: ['id_dish'],
+                order: [
+                    ['num', 'DESC'],
+                ],
+                limit: 5
             }
         )
         res.status(200).send({

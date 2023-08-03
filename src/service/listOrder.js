@@ -32,7 +32,6 @@ class ListOrder {
       const [order, detail] = await Promise.all(listInit)
       this.orders = [...order.map(item => item.dataValues)]
       this.detail = [...detail.map(item => item.dataValues)]
-      console.log(this.orders)
     })()
   }
   async addOrder(order) {

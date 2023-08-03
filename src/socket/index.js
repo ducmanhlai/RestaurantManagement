@@ -10,7 +10,7 @@ export default function socket(server) {
     socket.auth = false;
     socket.on('authenticate', function (data) {
       jwt.verify(data.token, process.env.ACCESS_KEY, (err, data) => {
-        if (err) {
+        if (err) {2
           console.log(err);
           socket.emit("err", err)
         }
@@ -31,7 +31,7 @@ export default function socket(server) {
     socket.on('updateStatusOrder', data => {
       updateStatusOrder(data, io)
     })
-    socket.on('getListOrder', data => {
+    socket.on('getListOrder', () => {
       socket.emit('getListOrder', listOrder.getOrders())
     })
     socket.on('payOrder', data => {
