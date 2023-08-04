@@ -22,7 +22,7 @@ class statistics_controller {
     }
     async getRevenue(req, res) {
         try {
-            const type = req.query?.month ?'month' : 'year';
+            const type = req.query?.month ? 'month' : 'year';
             const year = req.query?.year || new Date().getFullYear();
             let month = req.query?.month || new Date().getMonth()+1;
             const option = type.localeCompare('month') == 0 ? {

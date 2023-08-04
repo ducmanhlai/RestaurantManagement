@@ -50,7 +50,7 @@ const listBgColor = [' bg-danger', 'bg-warning','',' bg-info','bg-success'];
     const revenueMonth = result[1].data.data
     revenueMonth.forEach(item => { total += Number.parseInt(item.total) })
     revenueMonthElement.innerText = total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
-    revenueElement.innerText = revenue[0].total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    revenueElement.innerText = revenue[0].total?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })|| 0;
     handleChart(result[2].data.data,'year')
 })().finally()
 function handleChart(data, type) {
@@ -92,6 +92,25 @@ function handleChart(data, type) {
         });
     }
 }
+const monthElement = document.getElementById('month');
+const yearElement = document.getElementById('year');
+function handleInputTime(){
+    monthElement.addEventListener('change', ev=>{
+        
+        (async ()=>{
+            const a= ev.target.value
+        console.log(a)
+            let data= await axios.get(`/api/v1/statistics/revenue?year=${yearElement.value}${a!= 0? '&month='+a: ''}`)
+            console.log(data)
+        })().catch(err=>{
+            console.log(err)
+        })
+    })
+    yearElement.addEventListener('change',ev=>{
+        console.log('year',ev.target.value)
+    })
+}
+handleInputTime()
 function chartTopProducts(){
     // <h4 class="small font-weight-bold">Account Setup <span
     //                                                     class="float-right">Complete!</span></h4>
