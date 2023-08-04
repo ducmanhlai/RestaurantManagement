@@ -4,9 +4,20 @@
     <title>Đăng nhập</title>
     <link href="/public/css/login.css" rel="stylesheet" type="text/css">
 
-    <body>
+    <body id="page-top">
         <div id="login">
             <div class="container">
+                <div class="toast-container position-fixed top-0 end-0 p-3">
+                    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <strong class="me-auto" id="toastTitle">Thông báo</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body" id="toastMessage">
+                            Hello, world! This is a toast message.
+                        </div>
+                    </div>
+                </div>
                 <div id="login-row" class="row justify-content-center align-items-center">
                     <div id="login-column" class="col-md-6">
                         <div id="login-box" class="col-md-12">
@@ -32,8 +43,10 @@
                 </div>
             </div>
         </div>
+        <%- include('./partials/foot'); %>
         <script type="module">
             import axios from '../public/js/axios.js'
+            import showToast from '../public/js/toast.js'
             function Login() {
                 (async () => {
                     const username = document.getElementById('username').value;
@@ -42,16 +55,16 @@
                         username,
                         password
                     })).data
-                    if(data.accessToken){
+                    if (data.accessToken) {
                         localStorage.clear()
-                        localStorage.setItem('accessToken',data.accessToken);
-                        localStorage.setItem('refreshToken',data.refreshToken);
-                        window.location.href= '/view/home'
+                        localStorage.setItem('accessToken', data.accessToken);
+                        localStorage.setItem('refreshToken', data.refreshToken);
+                        window.location.href = '/view/home'
                     }
-                    console.log(data)
+                    else showToast('Đăng nhập thất bại', ' Sai tên đăng nhập hoặc mật khẩu')
                 }
-                
                 )().catch(err => {
+                    showToast('Đăng nhập thất bại', 'Có lỗi xảy ra')
                     console.log(err)
                 }).finally(() => console.log('xong'))
             }

@@ -66,7 +66,9 @@ class ListOrder {
   getOrders() {
     return this.orders.map(item => {
       return {
-        ...item, detail: [...this.detail.filter(i => {
+        ...item,
+        status:item.status, 
+        detail: [...this.detail.filter(i => {
           return i.id_order == item.id
         })]
       }

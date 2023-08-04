@@ -14,7 +14,6 @@ class admin_controller {
                             model: Model.staff,
                             as: 'staffs'
                         },
-
                         {
                             model: Model.role,
                             as: 'role_role',

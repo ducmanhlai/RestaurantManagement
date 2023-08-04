@@ -48,7 +48,6 @@ function createOrder() {
         div.setAttribute('class','shadow p-3 mb-1 bg-white rounded row')
         div.innerHTML = `
                  <p class='col-10'>${food.name}</p>`
-       
         const buttonElement = document.createElement('button');
         buttonElement.setAttribute('id',food.id)
         buttonElement.setAttribute('class','col')

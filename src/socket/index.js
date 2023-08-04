@@ -2,7 +2,7 @@ import { Server } from "socket.io";
 import jwt from "jsonwebtoken";
 import { createOrder, updateOrderDetail, updateStatusDetail, updateStatusOrder } from "service/order";
 import listOrder from "service/listOrder";
-import createBill from "service/createBill";
+import { createBill } from "service/bill";
 
 export default function socket(server) {
   const io = new Server(server);
@@ -10,7 +10,7 @@ export default function socket(server) {
     socket.auth = false;
     socket.on('authenticate', function (data) {
       jwt.verify(data.token, process.env.ACCESS_KEY, (err, data) => {
-        if (err) {
+        if (err) {2
           console.log(err);
           socket.emit("err", err)
         }
@@ -26,16 +26,17 @@ export default function socket(server) {
       updateOrderDetail(data, io)
     })
     socket.on('updateStatusDetail', data => {
-      updateStatusDetail(data,io)
+      updateStatusDetail(data, io)
     })
     socket.on('updateStatusOrder', data => {
-      updateStatusOrder(data,io)
+      updateStatusOrder(data, io)
     })
-    socket.on('getListOrder', data => {
+    socket.on('getListOrder', () => {
       socket.emit('getListOrder', listOrder.getOrders())
     })
-    socket.on('payOrder',data=>{
-      createBill(data.id)
+    socket.on('payOrder', data => {
+      createBill(data.id, data.staff)().finally(()=>io.emit('getListOrder', listOrder.getOrders())
+      )
       // io.emit('payOrder',data)
     })
     // setTimeout(() => {

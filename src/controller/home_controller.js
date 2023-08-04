@@ -1,4 +1,4 @@
-import createBill from "service/createBill"
+import createBill from "service/bill"
 import Model from '../config/sequelize';
 
 class home_controller {
