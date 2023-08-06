@@ -24,7 +24,7 @@ class statistics_controller {
         try {
             const type = req.query?.month ? 'month' : 'year';
             const year = req.query?.year || new Date().getFullYear();
-            let month = req.query?.month || new Date().getMonth()+1;
+            let month = req.query?.month || new Date().getMonth() + 1;
             const option = type.localeCompare('month') == 0 ? {
                 where: {
                     time: {
@@ -47,10 +47,33 @@ class statistics_controller {
             const turnover = await Model.bill.findAll(
                 option
             )
-            res.status(200).send({
-                message: 'Lấy dữ liệu thành công',
-                data: turnover
-            })
+            if (type.localeCompare('month') == 0) {
+                const monthlyTotals = new Array(31).fill(0);
+                // Điền giá trị total vào mảng
+                turnover.forEach(entry => {
+                    const monthIndex = entry.dataValues.day - 1;  // Chuyển tháng thành chỉ số (0-11)
+                    const total = parseInt(entry.dataValues.total);
+                    monthlyTotals[monthIndex] = total;
+                });
+                res.status(200).send({
+                    message: 'Lấy dữ liệu thành công',
+                    data: monthlyTotals
+                })
+            }
+            else {
+                const monthlyTotals = new Array(12).fill(0);
+                // Điền giá trị total vào mảng
+                turnover.forEach(entry => {
+                    const monthIndex = entry.dataValues.month - 1;  // Chuyển tháng thành chỉ số (0-11)
+                    const total = parseInt(entry.dataValues.total);
+                    monthlyTotals[monthIndex] = total;
+                });
+                res.status(200).send({
+                    message: 'Lấy dữ liệu thành công',
+                    data: monthlyTotals
+                })
+            }
+
         } catch (error) {
             console.log(error)
             res.status(500).send({
@@ -91,8 +114,7 @@ class statistics_controller {
             data: topSelling
         })
     }
-    async getTopRenueveProducts(req,res)
-    {
+    async getTopRenueveProducts(req, res) {
         const from = req.query?.from ? new Date(req.query?.from) : new Date(null)
         const to = req.query?.to ? new Date(req.query?.to) : new Date()
         const topSelling = await Model.order_detail.findAll(
@@ -106,7 +128,7 @@ class statistics_controller {
                         [Op.lt]: to
                     }
                 },
-                attributes: [[fn('SUM', col('price')), 'num'],'id_dish',[fn('SUM', col('quantity')), 'quantity']],
+                attributes: [[fn('SUM', col('price')), 'num'], 'id_dish', [fn('SUM', col('quantity')), 'quantity']],
                 group: ['id_dish'],
                 order: [
                     ['num', 'DESC'],
