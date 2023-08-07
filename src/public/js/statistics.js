@@ -1,5 +1,6 @@
 import axios from "./axios.js";
 const ctx = document.getElementById('topSaleChart');
+const topProductCharElement = document.getElementById('topProductChart')
 const listBgColor = [' bg-danger', 'bg-warning', '', ' bg-info', 'bg-success'];
 var char
 (async () => {
@@ -123,12 +124,26 @@ function handleInputTime() {
     })
 }
 handleInputTime()
-function chartTopProducts() {
-    // <h4 class="small font-weight-bold">Account Setup <span
-    //                                                     class="float-right">Complete!</span></h4>
-    //                                             <div class="progress">
-    //                                                 <div class="progress-bar bg-success" role="progressbar"
-    //                                                     style="width: 100%" aria-valuenow="100" aria-valuemin="0"
-    //                                                     aria-valuemax="100"></div>
-    //                                             </div>
+async function chartTopProducts() {
+    let data = (await axios.get(`/api/v1/statistics/topProduct`)).data.data;
+    let total=0
+    for( let i of data){
+        total+= Number.parseInt(i.num)
+    }
+    // console.log(total)
+    data.forEach((item,index) => {
+        const chartElement = document.createElement('div');
+        let percent = (item.num/total*100).toFixed(2)
+        chartElement.setAttribute('class', 'fs-16 font-weight-bold')
+        chartElement.innerHTML = `<h4 class="font-weight-bold fs-16" style="font-size:0.9rem">${item.id_dish_food.name}<span class="float-right">${percent}%</span></h4>
+        <div class="progress">
+        <div class="progress-bar ${listBgColor[index]}" role="progressbar"
+        style="width: ${percent}%" aria-valuenow="${percent}" aria-valuemin="0"
+        aria-valuemax="100"></div>
+        </div>`
+topProductCharElement.appendChild(chartElement)
+    })
 }
+chartTopProducts().catch(err => {
+    console.log(err)
+})

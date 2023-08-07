@@ -1,7 +1,6 @@
 import Model from '../config/sequelize';
 import { Op, col, } from 'sequelize';
 import { fn, literal } from 'sequelize';
-// import sequelize from '../config/sequelize';
 class statistics_controller {
     async getgetRevenueInDay(req, res) {
         const TODAY_START = new Date().setHours(0, 0, 0, 0);
@@ -128,7 +127,12 @@ class statistics_controller {
                         [Op.lt]: to
                     }
                 },
-                attributes: [[fn('SUM', col('price')), 'num'], 'id_dish', [fn('SUM', col('quantity')), 'quantity']],
+                include: {
+                    model: Model.food,
+                    as: 'id_dish_food',
+                    attributes: ['name'],
+                },
+                attributes: [[fn('SUM', col('order_detail.price')), 'num'], 'id_dish', [fn('SUM', col('quantity')), 'quantity']],
                 group: ['id_dish'],
                 order: [
                     ['num', 'DESC'],
