@@ -13,13 +13,14 @@ module.exports = function(sequelize, DataTypes) {
       references: {
         model: 'order',
         key: 'id'
-      }
+      },
+      unique: "fk_bill_order"
     },
     id_staff: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'account',
+        model: 'staff',
         key: 'id'
       }
     },
@@ -50,6 +51,14 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id" },
+        ]
+      },
+      {
+        name: "id_order_UNIQUE",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "id_order" },
         ]
       },
       {

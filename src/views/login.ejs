@@ -3,7 +3,6 @@
 <%- include('./partials/head'); %>
     <title>Đăng nhập</title>
     <link href="/public/css/login.css" rel="stylesheet" type="text/css">
-
     <body id="page-top">
         <div id="login">
             <div class="container">
@@ -55,7 +54,7 @@
                         username,
                         password
                     })).data
-                    if (data.accessToken) {
+                    if (data?.accessToken) {
                         localStorage.clear()
                         localStorage.setItem('accessToken', data.accessToken);
                         localStorage.setItem('refreshToken', data.refreshToken);

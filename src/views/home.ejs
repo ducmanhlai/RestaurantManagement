@@ -39,7 +39,8 @@
                                     </button>
                                     <button type="button" class="btn btn-labeled btn-info" id="btn-add"
                                         data-bs-toggle="modal" data-bs-target='#exampleModal'>
-                                        <span class="btn-label"><i class="fa fa-list fa-beat-fade"></i></span>Danh sách order
+                                        <span class="btn-label"><i class="fa fa-list fa-beat-fade"></i></span>Danh sách
+                                        order
                                     </button>
                                 </div>
                                 <table class="table table-bordered " id="orderTable" cellspacing="0" width="100%">
@@ -76,11 +77,13 @@
                 </a>
                 <%- include('./partials/foot'); %>
                     <script>
-                        function ModifyScreen(){
-                            // window.location.href='/view/create-order'
+                        function ModifyScreen() {
+                            window.location.href = '/view/create-order'
                         }
                     </script>
-                    <script type="module" src="../public/js/home.js"></script>
+                    <!-- <script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js" type="module"></script> -->
+                    <script type="module" src="../public/js/home.js">
+                    </script>
                     <!-- <script>
                         $(document).ready(function () {
                             $('#orderTable').DataTable({

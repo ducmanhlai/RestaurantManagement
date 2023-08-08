@@ -10,7 +10,7 @@ socket.on('connect', function () {
 socket.on("disconnect", () => {
     console.log(socket.id);
 });
-document.getElementById('btn-add').addEventListener('click',createOrder)
+
 const listOrder = [];
 (async () => {
     const typeList = (await axios.get('/api/v1/type/get')).data.data
@@ -27,30 +27,29 @@ const listOrder = [];
 });
 function addFood(food) {
     listOrder.push({ id: food.id, quantity: 1, price: food.price })
+    console.log(listOrder)
 }
-function createOrder() {
-    const order = {
-        "id_staff": 2,
-        "table": 21,
-        "note": "Bỏ ít ớt thôi, không cho đườngg",
-        'detail': [...listOrder]
-    }
-    console.log(order)
-}
+
 (async () => {
     const listFood = (await axios.get('/api/v1/food/get')).data.data
-
     const foodListElement = document.getElementById('listFood');
     listFood.forEach(function (food) {
         const listItem = document.createElement('div');
-        listItem.setAttribute('class', "container-fluid")
+        listItem.setAttribute('class', "container")
         const div= document.createElement('div')
-        div.setAttribute('class','shadow p-3 mb-1 bg-white rounded row')
+        div.setAttribute('class','shadow p-3 mb-1 bg-white rounded d-flex flex-row justify-content-center align-items-center')
         div.innerHTML = `
-                 <p class='col-10'>${food.name}</p>`
+        <img src="${food.avatar}" class="rounded-circle shadow-4"
+           style="width: 130px; height:auto" alt="Avatar" />
+           <div class='col-6'>
+           <p >${food.name}</p>
+           <p >${food.price.toLocaleString('vi-VN', {style : 'currency', currency : 'VND'})}</p>
+           </div>
+       
+    `
         const buttonElement = document.createElement('button');
         buttonElement.setAttribute('id',food.id)
-        buttonElement.setAttribute('class','col')
+        buttonElement.setAttribute('class','col-sm-2 btn btn-labeled btn-info mr-3 rounded-3 h-50')
         buttonElement.innerText = 'Thêm'
         buttonElement.addEventListener('click',(ev)=>{
             addFood(food)
@@ -62,3 +61,4 @@ function createOrder() {
 })().catch(function (error) {
     console.error('Không thể lấy danh sách món ăn', error);
 });
+document.getElementById('btn-add').addEventListener('click',createOrder)

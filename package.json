@@ -7,7 +7,7 @@
     "dev": "nodemon",
     "start": "node build/server.js",
     "build": "babel ./src -d ./build",
-    "sequelize": "node_modules/.bin/sequelize-auto -h localhost -d thuc_tap -u ducmanh -x Ducm@nh01 -p 3306 -e mysql -o models"
+    "sequelize": "node_modules/.bin/sequelize-auto -h localhost -d thuc_tap -u ducmanh -x Ducm@nh01 -p 3306 -e mysql -o ../models"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

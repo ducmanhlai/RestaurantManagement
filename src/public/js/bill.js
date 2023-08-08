@@ -15,6 +15,8 @@ function formatTimeISO8601ToLocale(timeString) {
     const staff = urlParams.get('staff')
     let total= 0
     const order = (await axios.get(`/api/v1/order/get?id=${id}&staff=${staff}`)).data.data
+    const staffPay = (await axios.get(`/api/v1/admin/staff/get?id=${staff}`)).data.data
+    console.log(staffPay)
     bill_element.innerHTML = `Số hóa đơn: ${order.id}`
     table_element.innerHTML = `Bàn: ${order.table}`
     order.order_details.forEach(item => {
@@ -22,7 +24,7 @@ function formatTimeISO8601ToLocale(timeString) {
         renderDetail(item)
     })
     date_element.innerText= `Thời gian: ${formatTimeISO8601ToLocale(order.time)}`
-    staff_element.textContent= `Nhân viên: ${order.id_staff_staff.name}`
+    staff_element.textContent= `Nhân viên: ${staffPay?.staffs[0].name || 'admin'}`
     addFooterTable('Giảm giá', 0,null,'discount')
     addFooterTable('Tổng cộng', total,'net-amount','total')
 })().catch(function (error) {

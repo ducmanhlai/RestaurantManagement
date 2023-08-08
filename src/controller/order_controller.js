@@ -40,7 +40,7 @@ class order_controller {
             let bill = (await saveBill(order, staff)).dataValues;
             res.status(200).send({
                 message: 'Lấy dữ liệu thành công',
-                data: { ...order.dataValues, id: bill.id, time: bill.time }
+                data: { ...order.dataValues, id: bill.id, time: bill.time,staff }
             })
         } catch (error) {
             console.log(error)

@@ -1,4 +1,21 @@
 import axios from "./axios.js";
+import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
+const socket = io();
+socket.emit('getListOrder');
+socket.on('getListOrder',data=>{
+    const div= document.getElementById('orderInday')
+    div.innerText=   data?.length || 0;
+})
+
+socket.on("disconnect", () => {
+    console.log(socket.id);
+});
+socket.on('connect', function () {
+    socket.emit('authenticate', { token: localStorage.getItem('accessToken') });
+    socket.on('err', (err) => {
+        window.location.href = '/view/login'
+    })
+});
 const ctx = document.getElementById('topSaleChart');
 const topProductCharElement = document.getElementById('topProductChart')
 const listBgColor = [' bg-danger', 'bg-warning', '', ' bg-info', 'bg-success'];
@@ -51,7 +68,7 @@ var char
     const revenueMonth = result[1].data.data
     revenueMonth.forEach(item => { total += Number.parseInt(item) })
     revenueMonthElement.innerText = total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
-    revenueElement.innerText = revenue[0].total?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) || 0;
+    revenueElement.innerText = Number.parseInt(revenue[0]?.total).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) || 0;
     handleChart(result[2].data.data, 'year')
 })().finally()
 function handleChart(data, type) {

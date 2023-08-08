@@ -18,6 +18,7 @@ class auth_controller {
                         errCode:0
                     })
                 }
+                else res.status(200).send({ message: 'Sai tên đăng nhập hoặc mật khẩu',errCode:1 })
             }
             else res.status(200).send({ message: 'Sai tên đăng nhập hoặc mật khẩu',errCode:1 })
         } catch (error) {
