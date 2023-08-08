@@ -74,9 +74,9 @@ function renderListOrder(data) {
             <td>${order.table}</td>
             <td>${totalAmout.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</td>
             <td>${formatTimeISO8601ToLocale(order.time)}</td>
-            <td>${order.status==4 ? 'Đã thanh toán': 'Chưa thanh toán'}</td>
+            <td>${order.status==4 ? 'Đã thanh toán':  order.status==3 ?  'Đã hủy': 'Chưa thanh toán' }</td>
             <td class="d-flex justify-content-around">
-            <button type="button" class="btn btn-info ${order.status==4 ? '':'btn-pay'}" id="${order.id}">${order.status==4 ? '<i class="fa fa-check" aria-hidden="true"></i>': 'Tính tiền'}</button>
+            <button type="button" class="btn btn-info ${order.status<3  ? '':'btn-pay'}" id="${order.id}">${order.status>2 ? '<i class="fa fa-check" aria-hidden="true"></i>': 'Tính tiền'}</button>
             </td>
           `;
           newRow.querySelector('.btn-pay')?.addEventListener('click', function(e) {

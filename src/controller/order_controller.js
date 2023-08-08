@@ -37,6 +37,15 @@ class order_controller {
                 }
             )
             await listOrder.updateStatusOrder(id,4)
+            await Model.order_detail.update({
+                    status: 4,
+                  }, {
+                    where: {
+                        id_order: id,
+                    },
+                  
+            })
+            listOrder.init()
             let bill = (await saveBill(order, staff)).dataValues;
             res.status(200).send({
                 message: 'Lấy dữ liệu thành công',

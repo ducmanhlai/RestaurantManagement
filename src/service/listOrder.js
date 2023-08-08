@@ -50,7 +50,7 @@ class ListOrder {
       let count = 0
       for (let detail of this.detail) {
         if (detail.id_order == order.id) {
-          count -= -1
+          count += 1
           if (detail.status == 3)
             cancel += 1
           if (detail.status == 4)
