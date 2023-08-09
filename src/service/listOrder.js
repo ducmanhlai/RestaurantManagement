@@ -59,7 +59,7 @@ class ListOrder {
       }
       if (cancel == count) await  this.updateStatusOrder(order.id, 3)
       else
-        if (finish == count) await this.updateStatusOrder(order.id, 4)
+        if (finish == count) await this.updateStatusOrder(order.id, 2)
       else await this.updateStatusOrder(order.id, 1)
     }
   }
