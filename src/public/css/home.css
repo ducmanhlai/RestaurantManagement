@@ -1,0 +1,14 @@
+.animationFadeIn {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+.animationMove {
+    animation: moveFromOutside 0.5s ease-in-out;
+}
+@keyframes moveFromOutside {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }

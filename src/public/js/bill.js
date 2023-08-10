@@ -14,7 +14,7 @@ function formatTimeISO8601ToLocale(timeString) {
     const id = urlParams.get('id')
     const staff = urlParams.get('staff')
     let total= 0
-    const order = (await axios.get(`/api/v1/order/get?id=${id}&staff=${staff}`)).data.data
+    const order = (await axios.get(`/api/v1/order/pay?id=${id}&staff=${staff}`)).data.data
     const staffPay = (await axios.get(`/api/v1/admin/staff/get?id=${staff}`)).data.data
     console.log(staffPay)
     bill_element.innerHTML = `Số hóa đơn: ${order.id}`

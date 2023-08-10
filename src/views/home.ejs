@@ -5,21 +5,21 @@
 
     <body id="page-top">
         <!-- Page Wrapper -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel">Thanh toán</h5>
+                        <h5 class="modal-title" id="modalLabel">Thông tin</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" id="modalBody">
                         <div class="input-group mb-3">
-                            <input type="text" id="name" class="form-control text-dark" placeholder="Tiền nhận">
+                            <p>Modal body text goes here.</p>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                        <button type="button" class="btn btn-primary" id="btnSave">Lưu</button>
+                      
                     </div>
                 </div>
             </div>
@@ -32,6 +32,19 @@
                     <div id="content">
                         <%- include('./partials/navbar'); %>
                             <div class="container-fluid">
+                                <div class="toast-container position-fixed top-0 end-0 p-3">
+                                    <div id="liveToast" class="toast" role="alert" aria-live="assertive"
+                                        aria-atomic="true">
+                                        <div class="toast-header">
+                                            <strong class="me-auto" id="toastTitle">Thông báo</strong>
+                                            <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                aria-label="Đóng"></button>
+                                        </div>
+                                        <div class="toast-body" id="toastMessage">
+                                            Hello, world! This is a toast message.
+                                        </div>
+                                    </div>
+                                </div>
                                 <div>
                                     <button type="button" class="btn btn-labeled btn-info" id="btn-add"
                                         onclick='ModifyScreen()'>

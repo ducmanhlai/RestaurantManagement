@@ -12,22 +12,21 @@ socket.on("disconnect", () => {
 });
 
 const listOrder = [];
-(async () => {
-    const typeList = (await axios.get('/api/v1/type/get')).data.data
-    // Tạo danh sách các loại món ăn
-    const typeListElement = document.getElementById('listType');
-    typeList.forEach(function (food) {
-        const listItem = document.createElement('button');
-        listItem.setAttribute('class', 'btn btn-labeled btn-info mr-3')
-        listItem.innerText = food.name;
-        typeListElement.appendChild(listItem);
-    });
-})().catch(function (error) {
-    console.error('Không thể lấy danh sách loại', error);
-});
+// (async () => {
+//     const typeList = (await axios.get('/api/v1/type/get')).data.data
+//     // Tạo danh sách các loại món ăn
+//     const typeListElement = document.getElementById('listType');
+//     typeList.forEach(function (food) {
+//         const listItem = document.createElement('button');
+//         listItem.setAttribute('class', 'btn btn-labeled btn-info mr-3')
+//         listItem.innerText = food.name;
+//         typeListElement.appendChild(listItem);
+//     });
+// })().catch(function (error) {
+//     console.error('Không thể lấy danh sách loại', error);
+// });
 function addFood(food) {
-    listOrder.push({ id: food.id, quantity: 1, price: food.price })
-    console.log(listOrder)
+    listOrder.push({ id_food: food.id, quantity: 1, price: food.price })
 }
 
 (async () => {
@@ -35,7 +34,7 @@ function addFood(food) {
     const foodListElement = document.getElementById('listFood');
     listFood.forEach(function (food) {
         const listItem = document.createElement('div');
-        listItem.setAttribute('class', "container")
+        listItem.setAttribute('class', "container-fluid")
         const div= document.createElement('div')
         div.setAttribute('class','shadow p-3 mb-1 bg-white rounded d-flex flex-row justify-content-center align-items-center')
         div.innerHTML = `
@@ -45,7 +44,6 @@ function addFood(food) {
            <p >${food.name}</p>
            <p >${food.price.toLocaleString('vi-VN', {style : 'currency', currency : 'VND'})}</p>
            </div>
-       
     `
         const buttonElement = document.createElement('button');
         buttonElement.setAttribute('id',food.id)
