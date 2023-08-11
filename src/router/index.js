@@ -8,6 +8,7 @@ import user_router from "./user";
 import order_router from "./order";
 import status_order_router from "./status_order";
 import statistics_router from "./statistics";
+import paymentRouter from "./pay";
 export default function router(app) {
    app.use('/view',home_router);
    app.use('/api/v1/auth',auth_router);
@@ -19,5 +20,6 @@ export default function router(app) {
    app.use('/api/v1/order',order_router);
    app.use('/api/v1/statistics', statistics_router);
    app.use('/api/v1/status_order',status_order_router);
+   app.use('/api/v1/payment',paymentRouter)
  }
  
