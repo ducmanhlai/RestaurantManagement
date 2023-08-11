@@ -108,9 +108,16 @@ class statistics_controller {
                 limit: 5
             }
         )
+        const total = await Model.order_detail.count({
+            where:{
+                status: {
+                    [Op.ne]: 3
+                },
+            }
+        })
         res.status(200).send({
             message: 'Lấy dữ liệu thành công',
-            data: topSelling
+            data: {topSelling,total}
         })
     }
     async getTopRenueveProducts(req, res) {
@@ -132,18 +139,31 @@ class statistics_controller {
                     as: 'id_dish_food',
                     attributes: ['name'],
                 },
-                attributes: [[fn('SUM', col('order_detail.price')), 'num'], 'id_dish', [fn('SUM', col('quantity')), 'quantity']],
+                attributes: [[fn('SUM', literal('order_detail.price*quantity')), 'total'],'id_dish'],
                 group: ['id_dish'],
                 order: [
-                    ['num', 'DESC'],
+                    ['total', 'DESC'],
                 ],
                 limit: 5
             }
         )
+        const total = await Model.order_detail.findOne(
+            {
+                where: {
+                    status: {
+                        [Op.ne]: 3
+                    },  
+                },
+                attributes: [[fn('SUM', literal('price*quantity')), 'total']],
+            }
+        )
         res.status(200).send({
             message: 'Lấy dữ liệu thành công',
-            data: topSelling
+            data: {topSelling, total: total.dataValues.total}
         })
+    }
+    async getTotalSellingProducts(req,res){
+
     }
 }
 export default new statistics_controller()

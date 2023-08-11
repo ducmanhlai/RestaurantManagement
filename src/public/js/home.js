@@ -97,7 +97,7 @@ function renderListOrder(data) {
                style="width: 130px; height:auto" alt="Avatar" />
                <div class='col-6'>
                <p >${item.id_dish_food.name}</p>
-               <p >${item.quantity}</p>
+               <p >Số lượng: ${item.quantity}</p>
                <p >${item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
                </div>
         `

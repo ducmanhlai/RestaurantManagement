@@ -12,3 +12,7 @@
       transform: translateY(0);
     }
   }
+
+.bg-violet{
+  background-color: #6f42c1;
+}
