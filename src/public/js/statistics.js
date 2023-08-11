@@ -45,7 +45,8 @@ var char
                 },
                 color: '#fff',
             }
-        }
+        },
+      
     };
     new Chart(ctx, {
         type: 'pie',
@@ -95,7 +96,12 @@ function handleChart(data, type) {
                 color: '#fff',
             }
         },
-
+        scales: {
+            y: {
+              beginAtZero: true
+            },
+          
+        }
     };
     if (type.localeCompare('year') == 0) {
         const monthlyTotals = new Array(12).fill(0);

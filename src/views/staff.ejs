@@ -5,7 +5,7 @@
     <body id="page-top" class="text-dark">
         <!-- Modal -->
 
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -76,7 +76,7 @@
                                 <!-- <button type="button" class="btn btn-labeled btn-info">
                                 <span class="btn-label"><i class="fa fa-plus" aria-hidden="true"></i></span></button> -->
                                 <button type="button" class="btn btn-labeled btn-info" id="btn-add"
-                                    data-bs-toggle="modal" data-bs-target='#exampleModal'>
+                                    data-bs-toggle="modal" data-bs-target='#myModal'>
                                     <span class="btn-label"><i class="fa fa-plus"></i></span> Thêm nhân viên
                                 </button>
                                 <table class="table">
@@ -123,7 +123,7 @@
                         // import socket from '../public/js/socket.js'
                         import axios from '../public/js/axios.js';
                         document.getElementById('btnSave').addEventListener('click', ManageStaff);
-                       
+                        var myModal = new bootstrap.Modal(document.getElementById('myModal'))
                         var tableBody = document.getElementById('table-body');
                         (async () => {
                             const data = (await axiosApiInstance.get('/api/v1/admin/staff/get')).data.data;
@@ -163,7 +163,7 @@
                             var btn = document.createElement('td');
                             let newbtn = document.createElement("button")
                             newbtn.textContent = 'Sửa'
-                            newbtn.setAttribute('data-bs-target', '#exampleModal')
+                            newbtn.setAttribute('data-bs-target', '#myModal')
                             newbtn.setAttribute("data-bs-toggle", "modal")
                             newbtn.setAttribute('class', 'btn btn-primary')
                             newbtn.addEventListener('click', () => getStaff(item.id))
@@ -215,8 +215,10 @@
                                 (async () => {
                                     let data = (await axiosApiInstance.post(`/api/v1/admin/staff/modify`, formData,
                                         { headers: { "Content-Type": "multipart/form-data" } })).data
+                                        myModal.hide()
                                     showToast('Thông báo', data.message)
                                 })().catch(err => {
+                                    myModal.hide()
                                     showToast('Lỗi', err)
                                 }).finally(() => idStaff = 0)
                             }
@@ -229,8 +231,10 @@
                                 (async () => {
                                     const data = (await axiosApiInstance.post(`/api/v1/admin/staff/create`, formData,
                                         { headers: { "Content-Type": "multipart/form-data" } })).data
+                                        myModal.hide()
                                     showToast('Thông báo', data.message)
                                 })().catch(err => {
+                                    myModal.hide()
                                     showToast('Lỗi', err)
                                 })
                             }

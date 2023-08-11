@@ -64,7 +64,7 @@ function renderListOrder(data) {
   data.sort(compareByStatus).forEach((order, index) => {
     let totalAmout = 0;
     order.detail.forEach(item => {
-      totalAmout += item.price * item.quantity
+      totalAmout += item.status!=3 ? item.price * item.quantity :0
     })
     const newRow = document.createElement('tr');
     newRow.setAttribute('class','animationFadeIn')
