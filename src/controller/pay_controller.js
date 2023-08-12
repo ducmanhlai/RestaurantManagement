@@ -1,8 +1,13 @@
 import moment from 'moment';
 import { readFileSync } from 'fs';
 import Model from '../config/sequelize'
-import auth from '../middleware/authenJWT'
+import auth from '../middleware/authenJWT';
+import listOrder from 'service/listOrder';
+import { saveBill } from 'service/bill';
+import { Op } from 'sequelize';
+import QRCode from 'qrcode';
 var file = readFileSync('./infopayment.json');
+
 const config = JSON.parse(file);
 
 class pay_controller {
@@ -56,8 +61,12 @@ class pay_controller {
         //     ;
         //     let payment = { id_account: acc.id, id_method: 1, amount, date: new Date(), status: 1, id_order: orderId }
         //     PayModel.create(payment).then(data => {
-                res.redirect(vnpUrl);
-                console.log(vnpUrl)
+        let qr = await QRCode.toDataURL(vnpUrl);
+        res.send({
+            code: 1,
+            data: qr
+        });
+        console.log(vnpUrl)
         //     })
         // } catch (error) {
         //     console.log(error);
@@ -87,13 +96,8 @@ class pay_controller {
             var orderId = vnp_Params['vnp_TxnRef'];
             var rspCode = vnp_Params['vnp_ResponseCode'];
             //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
-            try {
-                if (rspCode == '00') {
-                    res.status(200).json({ RspCode: '00', Message: 'success' });
-                  
-                }
-            } catch (error) {
-                res.status(200).json({ RspCode: '97', Message: 'Fail checksum' })
+            if (rspCode == '00') {
+                res.status(200).json({ RspCode: '00', Message: 'success' });
             }
 
         }
@@ -118,33 +122,48 @@ class pay_controller {
         var signed = hmac.update(new Buffer.from(signData, 'utf-8')).digest("hex");
         if (secureHash === signed) {
             var orderId = vnp_Params['vnp_TxnRef'];
-            //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-        //     const payment = await PayModel.findOne({ where: { id_order: orderId } });
-        //     const user = await UserModel.findOne({ where: { id_account: payment.dataValues.id_account } })
-        //     if (payment != null && user != null) {
-        //         const newPayment = { ...payment.dataValues, status: 2 };
-        //         const newUser = { ...user.dataValues, coin: user.dataValues.coin + payment.amount / 500 }
-        //         const update = []
-        //         update.push(payment.update(newPayment));
-        //         update.push(user.update(newUser))
-        //         Promise.all(update).then(data => {
-        //             res.send({
-        //                 message: 'Nạp tiền thành công',
-        //                 data: []
-        //             })
-        //         }).catch(err => {
-        //             res.send({
-        //                 message: 'Nạp tiền thất bại',
-        //                 data: []
-        //             })
-        //             console.log(err)
-        //         })
-        //     }
-            res.send({
-                message: 'Thanh toan thanh cong',
-                data: []
-            })
+            // const staff = 1;
+            // const order = await Model.order.findByPk(orderId,
+            //     {
+            //         include: [
+            //             {
+            //                 model: Model.order_detail,
+            //                 as: 'order_details',
+            //                 include: {
+            //                     model: Model.food,
+            //                     as: 'id_dish_food',
+            //                     attributes: ['name'],
+            //                 },
+            //                 where: {
+            //                     status: {
+            //                         [Op.ne]: 3
+            //                     }
+            //                 },
+            //                 attributes: ['price', 'quantity']
+            //             },
+            //             {
+            //                 model: Model.staff,
+            //                 as: 'id_staff_staff',
+            //                 attributes: ['name'],
+            //                 raw: true
+            //             }
+            //         ],
+            //         attributes: ['id', 'time', 'table'],
+            //     }
+            // )
+            // await listOrder.updateStatusOrder(orderId, 4)
+            // await Model.order_detail.update({
+            //     status: 4,
+            // }, {
+            //     where: {
+            //         id_order: orderId,
+            //     },
 
+            // })
+            // listOrder.init()
+            // let bill = (await saveBill(order, staff, 'online')).dataValues;
+            // res.send({ code: '00', message: 'Thanh toán thành công',bill:bill })
+            res.redirect(`http://localhost:8080/view/bill_pdf?id=${orderId}&staff=${1}&type=online`)
         } else {
             res.send({ code: '97' })
         }

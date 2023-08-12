@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
 import Model from '../config/sequelize'
-function createBill(id,staff) {
+function createBill(id,staff,) {
   return async () => {
     try {
       const browser = await puppeteer.launch({ headless: false });
@@ -24,7 +24,7 @@ function createBill(id,staff) {
     }
   }
 }
-async function saveBill(order, staff) {
+async function saveBill(order, staff,type='cash') {
   let total = 0;
   order.order_details.forEach(element => {
     total += element.price * element.quantity
@@ -33,7 +33,7 @@ async function saveBill(order, staff) {
     id_order: order.id,
     id_staff: staff,
     time: new Date(),
-    pay_method: 'cash',
+    pay_method: type,
     discount:0,
     total: total
   }

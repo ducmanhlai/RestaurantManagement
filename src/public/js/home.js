@@ -6,6 +6,7 @@ import axiosApiInstance from "./interceptor.js";
 const socket = io();
 const orderTableBody = document.getElementById('orderTableBody');
 var myModal = new bootstrap.Modal(document.getElementById('myModal'))
+var payModal = new bootstrap.Modal(document.getElementById('ModalPay'))
 socket.on('connect', function () {
   socket.emit('authenticate', { token: localStorage.getItem('accessToken') });
   socket.on('err', (err) => {
@@ -64,18 +65,19 @@ function renderListOrder(data) {
   data.sort(compareByStatus).forEach((order, index) => {
     let totalAmout = 0;
     order.detail.forEach(item => {
-      totalAmout += item.status!=3 ? item.price * item.quantity :0
+      totalAmout += item.status != 3 ? item.price * item.quantity : 0
     })
     const newRow = document.createElement('tr');
-    newRow.setAttribute('class','animationFadeIn')
+    newRow.setAttribute('class', 'animationFadeIn')
     newRow.innerHTML = `
             <th scope="row">${index + 1}</th>
             <td>${order.table}</td>
             <td>${totalAmout.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</td>
             <td>${formatTimeISO8601ToLocale(order.time)}</td>
             <td>${order.status == 4 ? 'Đã thanh toán' : order.status == 3 ? 'Đã hủy' : 'Chưa thanh toán'}</td>
-            <td class="d-flex justify-content-around">
-            <button type="button" class="btn btn-info ${order.status < 3 ? 'btn-pay' : ''}" id="${order.id}">${order.status > 2 ? '<i class="fa fa-check" aria-hidden="true"></i>' : 'Tính tiền'}</button>
+            <td class="d-flex justify-content-center">
+            <button type="button" class="btn btn-info ${order.status < 3 ? 'btn-pay' : ''}" id="${order.id}">${order.status > 2 ? '<i class="fa fa-check" aria-hidden="true"></i>' : 'Thanh toán'}</button>
+            <button type="button" data-amount='${totalAmout}' class="btn btn-info ${order.status < 3 ? 'btn-pay-online' : ''}" id="on${order.id}">${order.status > 2 ? '<i class="fa fa-check" aria-hidden="true"></i>' : 'Thanh toán trục tuyến'}</button>
             <button type="button" class="btn btn-info mr-2 ml-auto btn-i"  id="i${order.id}"><i class="fa fa-info" aria-hidden="true"></i></button>
             </td>
           `;
@@ -116,6 +118,25 @@ function renderListOrder(data) {
           "id": li.id,
           "staff": 1
         })
+    });
+    newRow.querySelector('.btn-pay-online')?.addEventListener('click', async function (e) {
+      try {
+        const li = e.target
+        let id = li.id.replace('on', "");
+        const imgElement = document.getElementById('img-qr')
+        const data = (await axios.post('/api/v1/payment/create', {
+          amount: Number.parseInt(li.dataset.amount),
+          orderDescription: 'Thanh toán tiền cơm',
+          orderType: 18,
+          bankCode: 'NCB',
+          orderId: Number.parseInt(id)
+        })).data.data
+        imgElement.setAttribute('src',data)
+        payModal.show()
+      } catch (error) {
+        payModal.hide()
+        showToast('Thông báo', 'Có lỗi xảy ra')
+      }
     });
     newRow.setAttribute('id', order.id)
     orderTableBody.appendChild(newRow);

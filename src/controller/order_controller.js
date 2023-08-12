@@ -8,6 +8,7 @@ class order_controller {
         try {
             const id = req.query?.id || 1;
             const staff = req.query?.staff || 1;
+            const type = req.query?.type || 'cash';
             const order = await Model.order.findByPk(id,
                 {
                     include: [
@@ -46,7 +47,7 @@ class order_controller {
 
             })
             listOrder.init()
-            let bill = (await saveBill(order, staff)).dataValues;
+            let bill = (await saveBill(order, staff,type)).dataValues;
             res.status(200).send({
                 message: 'Lấy dữ liệu thành công',
                 data: { ...order.dataValues, id: bill.id, time: bill.time, staff }
