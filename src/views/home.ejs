@@ -5,21 +5,36 @@
 
     <body id="page-top">
         <!-- Page Wrapper -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel">Thanh toán</h5>
+                        <h5 class="modal-title" id="modalLabel">Thông tin</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <div class="input-group mb-3">
-                            <input type="text" id="name" class="form-control text-dark" placeholder="Tiền nhận">
-                        </div>
+                    <div class="overflow-auto w-100 h-100" style="max-height: 478px;" id="modalBody">
+                       
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                        <button type="button" class="btn btn-primary" id="btnSave">Lưu</button>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="ModalPay" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Thông tin</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="overflow-auto w-100 h-100" style="max-height: 478px;" id="modalBody">
+                        <img id="img-qr" class="w-90 h-90">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                      
                     </div>
                 </div>
             </div>
@@ -32,6 +47,19 @@
                     <div id="content">
                         <%- include('./partials/navbar'); %>
                             <div class="container-fluid">
+                                <div class="toast-container position-fixed top-0 end-0 p-3">
+                                    <div id="liveToast" class="toast" role="alert" aria-live="assertive"
+                                        aria-atomic="true">
+                                        <div class="toast-header">
+                                            <strong class="me-auto" id="toastTitle">Thông báo</strong>
+                                            <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                aria-label="Đóng"></button>
+                                        </div>
+                                        <div class="toast-body" id="toastMessage">
+                                            Hello, world! This is a toast message.
+                                        </div>
+                                    </div>
+                                </div>
                                 <div>
                                     <button type="button" class="btn btn-labeled btn-info" id="btn-add"
                                         onclick='ModifyScreen()'>
@@ -39,7 +67,8 @@
                                     </button>
                                     <button type="button" class="btn btn-labeled btn-info" id="btn-add"
                                         data-bs-toggle="modal" data-bs-target='#exampleModal'>
-                                        <span class="btn-label"><i class="fa fa-list fa-beat-fade"></i></span>Danh sách order
+                                        <span class="btn-label"><i class="fa fa-list fa-beat-fade"></i></span>Danh sách
+                                        order
                                     </button>
                                 </div>
                                 <table class="table table-bordered " id="orderTable" cellspacing="0" width="100%">
@@ -76,11 +105,13 @@
                 </a>
                 <%- include('./partials/foot'); %>
                     <script>
-                        function ModifyScreen(){
-                            window.location.href='/view/create-order'
+                        function ModifyScreen() {
+                            window.location.href = '/view/create-order'
                         }
                     </script>
-                    <script type="module" src="../public/js/home.js"></script>
+                    <!-- <script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js" type="module"></script> -->
+                    <script type="module" src="../public/js/home.js">
+                    </script>
                     <!-- <script>
                         $(document).ready(function () {
                             $('#orderTable').DataTable({

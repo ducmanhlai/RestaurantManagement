@@ -12,8 +12,8 @@ class ListOrder {
   init() {
     (async () => {
       const today = new Date();
-      const start = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1,-today.getHours(),0,0,0,0);
-      const end = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+      const start = new Date(today.getFullYear(), today.getMonth(), today.getDate(), -today.getHours(), 0, 0, 0, 0);
+      const end = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1 );
       const listInit = []
       listInit.push(orderModel.findAll({
         where: {
@@ -50,24 +50,29 @@ class ListOrder {
       let count = 0
       for (let detail of this.detail) {
         if (detail.id_order == order.id) {
-          count -= -1
+          count += 1
           if (detail.status == 3)
             cancel += 1
           if (detail.status == 4)
             finish += 1
         }
       }
-      if (cancel == count) await  this.updateStatusOrder(order.id, 3)
-      else
-        if (finish == count) await this.updateStatusOrder(order.id, 4)
-      else await this.updateStatusOrder(order.id, 1)
+      if (
+        order.status != 4
+      ) {
+        if (cancel == count) await this.updateStatusOrder(order.id, 3)
+        else
+          if (finish == count) await this.updateStatusOrder(order.id, 2)
+          else await this.updateStatusOrder(order.id, 1)
+      }
     }
   }
+
   getOrders() {
     return this.orders.map(item => {
       return {
         ...item,
-        status:item.status, 
+        status: item.status,
         detail: [...this.detail.filter(i => {
           return i.id_order == item.id
         })]
@@ -94,7 +99,7 @@ class ListOrder {
       }
       return item
     })]
-   await this.modifyStatus()
+    await this.modifyStatus()
   }
   async updateStatusOrder(id, status) {
     const order = await orderModel.findByPk(id);

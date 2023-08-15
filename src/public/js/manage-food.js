@@ -1,6 +1,7 @@
 import showToast from "./toast.js";
 import axiosApiInstance from './interceptor.js';
 document.getElementById('btnSave').addEventListener('click', ManageFood);
+var myModal = new bootstrap.Modal(document.getElementById('myModal'))
 document.getElementById('btn-add').addEventListener('click', () => {
     document.getElementById('file').value ='';
     document.getElementById('modalLabel').innerText = "Thêm mới"
@@ -51,7 +52,7 @@ function insert(item, index) {
     var btn = document.createElement('td');
     let newbtn = document.createElement("button")
     newbtn.textContent = 'Sửa'
-    newbtn.setAttribute('data-bs-target', '#exampleModal')
+    newbtn.setAttribute('data-bs-target', '#myModal')
     newbtn.setAttribute("data-bs-toggle", "modal")
     newbtn.setAttribute('class', 'btn btn-primary')
     newbtn.addEventListener('click', () => getFood(item.id))
@@ -90,9 +91,11 @@ function ManageFood() {
         (async () => {
             let data = (await axiosApiInstance.put(`/api/v1/food/modify`, formData,
                 { headers: { "Content-Type": "multipart/form-data" } })).data
+            myModal.hide()
             showToast('Thông báo', data.message)
             getData()
         })().catch(err => {
+            myModal.hide()
             showToast('Lỗi', err)
         }).finally(() => 
         idFood = 0)
@@ -102,9 +105,11 @@ function ManageFood() {
             document.getElementById('name').value = "";
             const data = (await axiosApiInstance.post(`/api/v1/food/create`, formData,
                 { headers: { "Content-Type": "multipart/form-data" } })).data
+                myModal.hide()
             getData()
             showToast('Thông báo', data.message)
         })().catch(err => {
+            myModal.hide()
             showToast('Lỗi', err)
         })
     }

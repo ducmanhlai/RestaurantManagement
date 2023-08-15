@@ -5,7 +5,7 @@
 
 
     <body id="page-top">
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -102,7 +102,7 @@
 
                                 <div class="d-flex justify-content-between">
                                     <button type="button" class="btn btn-labeled btn-info mb-1" id="btn-add"
-                                        data-bs-toggle="modal" data-bs-target='#exampleModal'>
+                                        data-bs-toggle="modal" data-bs-target='#myModal'>
                                         <span class="btn-label"><i class="fa fa-plus"></i></span> Thêm món ăn
                                     </button>
                                     <button type="button" class="btn btn-labeled btn-info mb-1" data-bs-toggle="modal"
@@ -154,11 +154,14 @@
                     <script type="module">
                         import axiosApiInstance from '../public/js/interceptor.js';
                         import showToast from "../public/js/toast.js";
+                        var myModal = new bootstrap.Modal(document.getElementById('typeModal'))
                         document.getElementById('btn-add-type').addEventListener('click', () => {
                             let type = document.getElementById('nameType').value;
                             axiosApiInstance.post('/api/v1/type/create', { name: type }).then(data => {
+                                myModal.hide()
                                 showToast('Thông báo', data.data.message)
                             }).catch(err => {
+                                myModal.hide()
                                 showToast('Thông báo', err)
                             })
                         })
@@ -166,11 +169,14 @@
                     <script type="module">
                         import axiosApiInstance from '../public/js/interceptor.js';
                         import showToast from "../public/js/toast.js";
+                        var myModal = new bootstrap.Modal(document.getElementById('tableModal'))
                         document.getElementById('btn-add-table').addEventListener('click', () => {
                             let type = document.getElementById('nameTable').value;
                             axiosApiInstance.post('/api/v1/table/create', { name: type }).then(data => {
+                                myModal.hide()
                                 showToast('Thông báo', data.data.message)
                             }).catch(err => {
+                                myModal.hide()
                                 showToast('Thông báo', err)
                             })
                         })
