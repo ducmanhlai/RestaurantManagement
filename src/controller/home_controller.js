@@ -23,6 +23,9 @@ class home_controller {
     bill(req, res) {
         res.render('bill')
     }
+    report(req, res) {
+        res.render('report')
+    }
     async bill_pdf(req, res) {
         res.render('bill')
     }
