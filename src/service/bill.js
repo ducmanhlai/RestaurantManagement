@@ -17,8 +17,6 @@ function createBill(id,staff,) {
         // Tạo tệp PDF từ nội dung HTML
         await page.pdf({ path: path.join(__dirname, `../../bill/bill-${id}.pdf`) });
       },5000)
-     
-
       // Đóng trình duyệt
       // await browser.close();
     } catch (error) {

@@ -35,7 +35,10 @@ export default function socket(server) {
       socket.emit('getListOrder', listOrder.getOrders())
     })
     socket.on('payOrder', data => {
-      createBill(data.id, data.staff)().finally(()=>io.emit('getListOrder', listOrder.getOrders())
+      createBill(data.id, data.staff)().finally(()=>
+      setTimeout(()=>{
+        io.emit('getListOrder', listOrder.getOrders())
+      },5000) 
       )
       // io.emit('payOrder',data)
     })
