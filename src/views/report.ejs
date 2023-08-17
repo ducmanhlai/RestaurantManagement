@@ -91,16 +91,65 @@
                     <script type="module">
                         import axiosApiInstance from '../public/js/interceptor.js';
                         import showToast from "../public/js/toast.js";
+                        var ListData = []
+                        const tableElement = document.getElementById('reportTableBody');
+                        var from = null;
+                        var to = null;
+                        async function getData() {
+                            try {
+                                const data = (await axiosApiInstance.get(`/api/v1/report/get-by-time${!from  ? '': `?from=${from}`}${!to ? '': `&to=${to}`}`)).data.data.list;
+                                ListData = [...data]
+                                tableElement.innerHTML = ''
+                                ListData.forEach((element, index) => {
+                                    let total = Number.parseInt(element.num) * element.price
+                                    var row = document.createElement('tr');
+                                    row.innerHTML = `
+                                <td>${index}</td>
+                                <td>${element.id_dish_food.name}</td>
+                                <td>${element.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                                <td>${element.num}</td>
+                                <p>${total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+                                `
+                                    tableElement.appendChild(row)
+                                });
+
+                            } catch (error) {
+                                console.error(error)
+                                showToast('Thông báo', 'Có lỗi xảy ra khi lấy dữ liệu')
+                            }
+                        }
+                        getData().finally(() => console.log('xxong'))
                         function download() {
                             const workbook = new ExcelJS.Workbook();
                             const sheet = workbook.addWorksheet('My Sheet');
-                            sheet.getCell('A1').value = 'Hello, ExcelJS!';
+                            sheet.addRow([
+                                "Báo Cáo",
+                                `Từ ${!from  ? new Date(null): from}`,
+                                `Đến ${!to  ? new Date(): to}`,
+                            ])
+                            sheet.addRow([
+                                "Số thứ tự",
+                                "Tên",
+                                "Giá",
+                                "Số lượng đã bán",
+                                "Tổng tiền"
+                            ])
+                            ListData.forEach((element, index) => {
+                                let total = Number.parseInt(element.num) * element.price
+                                sheet.addRow([
+                                    index,
+                                    element.id_dish_food.name,
+                                    element.price,
+                                    element.num,
+                                    total
+                                ])
+                            })
                             workbook.xlsx.writeBuffer().then(function (data) {
                                 var blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8" });
                                 var link = document.createElement('a');
                                 var url = window.URL.createObjectURL(blob);
                                 link.href = url;
-                                link.download = 'ten-tap-tin.xlsx'; // Đặt tên cho tập tin tải xuống
+                                link.download = 'sheet.xlsx'; // Đặt tên cho tập tin tải xuống
                                 document.body.appendChild(link);
                                 link.click();
 
@@ -108,8 +157,14 @@
                                 window.URL.revokeObjectURL(url);
                             });
                         }
-
                         document.getElementById('btnDownLoad').addEventListener('click', download);
+                        document.getElementById('btnReport').addEventListener('click',()=>{
+                            from= document.getElementById('from').value;
+                            to=document.getElementById('to').value
+                            getData().catch(err=>{
+
+                            })
+                        })
                     </script>
     </body>
 
