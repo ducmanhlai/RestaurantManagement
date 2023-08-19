@@ -22,7 +22,7 @@ class pay_controller {
         var returnUrl = config.vnp_ReturnUrl;
         var date = new moment();
         var createDate = date.format('yyyyMMDDHHmmss');
-        var orderId = req.body.orderId
+        var orderId = req.body.orderId;
         var amount = req.body.amount;
         var bankCode = req.body.bankCode;
         var orderInfo = req.body.orderDescription;
