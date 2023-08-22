@@ -77,7 +77,7 @@ var char
     const revenueMonth = result[1].data.data
     revenueMonth.forEach(item => { total += Number.parseInt(item) })
     revenueMonthElement.innerText = total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
-    revenueElement.innerText = Number.parseInt(revenue[0]?.total).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) || 0;
+    revenueElement.innerText = Number.parseInt( revenue[0].total==null? 0 : revenue[0].total).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
     handleChart(result[2].data.data, 'year')
 })().finally()
 function handleChart(data, type) {

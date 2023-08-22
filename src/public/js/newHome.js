@@ -36,38 +36,67 @@ function Init() {
         data.forEach(element => {
             const div = document.createElement('div');
             div.setAttribute('class', 'table-element');
-            div.setAttribute('id', element.id)
+            div.setAttribute('id', element.id);
             div.innerText = element.name;
-            listTableElement.appendChild(div)
+            div.addEventListener('click', () => {
+                numOrder = element.id;
+                showModal().then().catch((err)=>{
+                    console.log('có lỗi',err)
+                })
+            })
+            listTableElement.appendChild(div);
         })
     })().then().catch(err => {
         showToast('Thông báo', 'Có lỗi xảy ra');
     })
 }
 function renderTable(data) {
-    
+    console.log(listTable)
     if (listTable.length == 0)
         return
     else {
         listTable.forEach(element => {
             const tableElement = document.getElementById(element.id);
-            console.log(checkTable(element.id,data))
-            if(checkTable(element.id,data)){
-                
-                tableElement.setAttribute('class','table-element-select')
+            if (checkTable(element.id, data)) {
+                tableElement.setAttribute('class', 'table-element-select')
             }
-            else{
-                tableElement.setAttribute('class','table-element')
+            else {
+                tableElement.setAttribute('class', 'table-element')
             }
         });
     }
 }
-function checkTable(id,data) {
+function checkTable(id, data) {
+  
     for (let i of data) {
-        if ( i.table== id && i.status < 3)
+        if (i.table == id && i.status < 3)
             return true
     }
     return false
+}
+async function showModal() {
+    var listStatus = ['Đã gọi', 'Đã hoàn thành', 'Đã hủy', 'Đã thanh toán']
+    const data = (await axiosApiInstance.get(`/api/v1/order/get-by-table?id=${numOrder}`)).data.data
+    const modalBody = document.getElementById('modalBody')
+    modalBody.innerHTML = ''
+    data.order_details.forEach(item => {
+        const listItem = document.createElement('div');
+        listItem.setAttribute('class', "container-fluid")
+        const div = document.createElement('div')
+        div.setAttribute('class', 'shadow p-3 mb-1 bg-white rounded d-flex flex-row justify-content-center align-items-center animationMove')
+        div.innerHTML = `
+      <img src="${item.id_dish_food.avatar}" class="rounded-circle shadow-4"
+         style="width: 130px; height:auto" alt="Avatar" />
+         <div class='col-6'>
+         <p >${item.id_dish_food.name}</p>
+         <p >Số lượng: ${item.quantity}</p>
+         <p >Trạng thái: ${listStatus[item.status - 1]}</p>
+         <p >${item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+         </div>
+  `
+        modalBody.appendChild(div)
+        myModal.show()
+    })
 }
 Init()
 

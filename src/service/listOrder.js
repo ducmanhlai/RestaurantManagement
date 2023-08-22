@@ -12,7 +12,7 @@ class ListOrder {
   init() {
     (async () => {
       const today = new Date();
-      const start = new Date(today.getFullYear(), today.getMonth(), today.getDate()-1,today.getHours(), 0, 0, 0, 0);
+      const start = new Date(today.getFullYear(), today.getMonth(), today.getDate()-2,today.getHours(), 0, 0, 0, 0);
       const end = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1 );
       const listInit = []
       listInit.push(orderModel.findAll({
