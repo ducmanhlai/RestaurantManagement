@@ -5,6 +5,10 @@ import axios from "./axios.js";
 import axiosApiInstance from "./interceptor.js";
 var listTable = []
 const socket = io();
+function formatTime(timeString) {
+    return new Date(timeString).toLocaleString('vi-VN', {
+    });
+  }
 const orderTableBody = document.getElementById('orderTableBody');
 var myModal = new bootstrap.Modal(document.getElementById('myModal'))
 var payModal = new bootstrap.Modal(document.getElementById('ModalPay'))
@@ -67,7 +71,6 @@ function renderTable(data) {
     }
 }
 function checkTable(id, data) {
-  
     for (let i of data) {
         if (i.table == id && i.status < 3)
             return true
@@ -76,11 +79,16 @@ function checkTable(id, data) {
 }
 async function showModal() {
     var listStatus = ['Đã gọi', 'Đã hoàn thành', 'Đã hủy', 'Đã thanh toán']
-    const data = (await axiosApiInstance.get(`/api/v1/order/get-by-table?id=${numOrder}`)).data.data
+    const data = (await axiosApiInstance.get(`/api/v1/order/get-by-table?id=${numOrder}`)).data.data;
+
     const modalBody = document.getElementById('modalBody')
+    document.getElementById('staffName').innerText=`Nhân viên: ${data.id_staff_staff.name}`
+    document.getElementById('timeLabel').innerText=`Thời gian: ${formatTime(data.time)}`
+    let total = 0
     modalBody.innerHTML = ''
     data.order_details.forEach(item => {
         const listItem = document.createElement('div');
+        total+= item.status != 3 ? item.price*item.quantity : 0
         listItem.setAttribute('class', "container-fluid")
         const div = document.createElement('div')
         div.setAttribute('class', 'shadow p-3 mb-1 bg-white rounded d-flex flex-row justify-content-center align-items-center animationMove')
@@ -94,6 +102,7 @@ async function showModal() {
          <p >${item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
          </div>
   `
+        document.getElementById('totalLabel').innerText=`Tổng tiền: ${total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}`
         modalBody.appendChild(div)
         myModal.show()
     })
