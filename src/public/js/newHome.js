@@ -8,10 +8,10 @@ const socket = io();
 function formatTime(timeString) {
     return new Date(timeString).toLocaleString('vi-VN', {
     });
-  }
+}
 const orderTableBody = document.getElementById('orderTableBody');
 var myModal = new bootstrap.Modal(document.getElementById('myModal'))
-var payModal = new bootstrap.Modal(document.getElementById('ModalPay'))
+var payModal = new bootstrap.Modal(document.getElementById('ModalPay'));
 socket.on('connect', function () {
     socket.emit('authenticate', { token: localStorage.getItem('accessToken') });
     socket.on('err', (err) => {
@@ -19,7 +19,8 @@ socket.on('connect', function () {
     })
 });
 let numOrder = 0;
-
+var idOrder = 0;
+var totalOrder = 0;
 socket.emit('getListOrder');
 socket.on('getListOrder', renderTable)
 socket.on('createOrder', () => {
@@ -28,10 +29,6 @@ socket.on('createOrder', () => {
 socket.on("disconnect", () => {
     console.log(socket.id);
 });
-function formatTimeISO8601ToLocale(timeString) {
-    return new Date(timeString).toLocaleString('vi-VN', {
-    });
-}
 function Init() {
     (async () => {
         const data = (await axiosApiInstance.get('/api/v1/table/get')).data.data
@@ -44,12 +41,38 @@ function Init() {
             div.innerText = element.name;
             div.addEventListener('click', () => {
                 numOrder = element.id;
-                showModal().then().catch((err)=>{
-                    console.log('có lỗi',err)
+                showModal().then().catch((err) => {
+                    console.log('có lỗi', err)
                 })
             })
             listTableElement.appendChild(div);
         })
+        document.getElementById('btnPay').addEventListener('click', () => {
+            socket.emit('payOrder',
+                {
+                    "id": idOrder,
+                    "staff": 1
+                })
+        })
+        document.getElementById('btnVnpay').addEventListener('click', async () => {
+            try {
+                const imgElement = document.getElementById('img-qr')
+                const data = (await axios.post('/api/v1/payment/create', {
+                    amount: Number.parseInt(totalOrder),
+                    orderDescription: 'Thanh toán tiền cơm',
+                    orderType: 18,
+                    bankCode: 'NCB',
+                    orderId: idOrder
+                })).data.data
+                imgElement.setAttribute('src', data)
+                payModal.show()
+            } catch (error) {
+                console.log(error)
+                payModal.hide()
+                showToast('Thông báo', 'Có lỗi xảy ra')
+            }
+        })
+
     })().then().catch(err => {
         showToast('Thông báo', 'Có lỗi xảy ra');
     })
@@ -80,15 +103,15 @@ function checkTable(id, data) {
 async function showModal() {
     var listStatus = ['Đã gọi', 'Đã hoàn thành', 'Đã hủy', 'Đã thanh toán']
     const data = (await axiosApiInstance.get(`/api/v1/order/get-by-table?id=${numOrder}`)).data.data;
-
     const modalBody = document.getElementById('modalBody')
-    document.getElementById('staffName').innerText=`Nhân viên: ${data.id_staff_staff.name}`
-    document.getElementById('timeLabel').innerText=`Thời gian: ${formatTime(data.time)}`
+    document.getElementById('staffName').innerText = `Nhân viên: ${data.id_staff_staff.name}`
+    document.getElementById('timeLabel').innerText = `Thời gian: ${formatTime(data.time)}`
+    idOrder = data.id
     let total = 0
     modalBody.innerHTML = ''
     data.order_details.forEach(item => {
         const listItem = document.createElement('div');
-        total+= item.status != 3 ? item.price*item.quantity : 0
+        total += item.status != 3 ? item.price * item.quantity : 0
         listItem.setAttribute('class', "container-fluid")
         const div = document.createElement('div')
         div.setAttribute('class', 'shadow p-3 mb-1 bg-white rounded d-flex flex-row justify-content-center align-items-center animationMove')
@@ -99,15 +122,14 @@ async function showModal() {
          <p >${item.id_dish_food.name}</p>
          <p >Số lượng: ${item.quantity}</p>
          <p >Trạng thái: ${listStatus[item.status - 1]}</p>
-         <p >${item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+         <p id="amount" data=${item.price}>${item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
          </div>
   `
-        document.getElementById('totalLabel').innerText=`Tổng tiền: ${total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}`
         modalBody.appendChild(div)
-        myModal.show()
     })
+    totalOrder = total
+    document.getElementById('totalLabel').innerText = `Tổng tiền: ${total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}`
+
+    myModal.show()
 }
 Init()
-
-
-

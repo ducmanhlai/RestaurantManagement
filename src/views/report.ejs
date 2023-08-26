@@ -104,7 +104,7 @@
                                     let total = Number.parseInt(element.num) * element.price
                                     var row = document.createElement('tr');
                                     row.innerHTML = `
-                                <td>${index}</td>
+                                <td>${index+1}</td>
                                 <td>${element.id_dish_food.name}</td>
                                 <td>${element.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
                                 <td>${element.num}</td>
