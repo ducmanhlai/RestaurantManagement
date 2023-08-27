@@ -124,7 +124,7 @@ class order_controller {
                             raw: true
                         }
                     ],
-                    attributes: ['id', 'time', 'table'],
+                    attributes: ['id', 'time', 'table','status'],
                     order: [['time', 'DESC']]
                     
                 }

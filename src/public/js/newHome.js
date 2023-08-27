@@ -129,7 +129,14 @@ async function showModal() {
     })
     totalOrder = total
     document.getElementById('totalLabel').innerText = `Tổng tiền: ${total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}`
-
+    if(data.status>2){
+        document.getElementById('btnPay').hidden=true;
+        document.getElementById('btnVnpay').hidden=true
+    }
+    else{
+        document.getElementById('btnPay').hidden=false
+        document.getElementById('btnVnpay').hidden=false
+    }
     myModal.show()
 }
 Init()
