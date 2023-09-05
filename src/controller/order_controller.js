@@ -47,7 +47,7 @@ class order_controller {
 
             })
             listOrder.init()
-            let bill = (await saveBill(order, staff,type)).dataValues;
+            let bill = (await saveBill(order, staff, type)).dataValues;
             res.status(200).send({
                 message: 'Lấy dữ liệu thành công',
                 data: { ...order.dataValues, id: bill.id, time: bill.time, staff }
@@ -72,9 +72,9 @@ class order_controller {
                             include: {
                                 model: Model.food,
                                 as: 'id_dish_food',
-                                attributes: ['name','avatar'],
+                                attributes: ['name', 'avatar'],
                             },
-                            attributes: ['price', 'quantity','status']
+                            attributes: ['price', 'quantity', 'status']
                         },
                         {
                             model: Model.staff,
@@ -97,7 +97,49 @@ class order_controller {
                 data: {}
             })
         }
-
+    }
+    async getByTable(req, res) {
+        const id = req.query?.id || 1;
+        try {
+            const order = await Model.order.findOne(
+                {
+                    where: {
+                        table: id
+                    },
+                    include: [
+                        {
+                            model: Model.order_detail,
+                            as: 'order_details',
+                            include: {
+                                model: Model.food,
+                                as: 'id_dish_food',
+                                attributes: ['name', 'avatar'],
+                            },
+                            attributes: ['price', 'quantity', 'status']
+                        },
+                        {
+                            model: Model.staff,
+                            as: 'id_staff_staff',
+                            attributes: ['name'],
+                            raw: true
+                        }
+                    ],
+                    attributes: ['id', 'time', 'table','status'],
+                    order: [['time', 'DESC']]
+                    
+                }
+            )
+            res.status(200).send({
+                message: 'Lấy dữ liệu thành công',
+                data: order
+            })
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({
+                message: 'Có lỗi xảy ra',
+                data: {}
+            })
+        }
     }
 }
 export default new order_controller()

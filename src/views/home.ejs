@@ -2,22 +2,26 @@
 <html lang="en">
 <%- include('./partials/head'); %>
 
-
     <body id="page-top">
         <!-- Page Wrapper -->
         <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel">Thông tin</h5>
+                        <div>
+                            <h5 class="modal-title" id="modalLabel">Thông tin</h5>
+                            <p class="modal-title" id="staffName"></p>
+                            <p class="modal-title" id="timeLabel">Thời gian: </p>
+                            <p class="modal-title" id="totalLabel">Tổng tiền: </p>
+                        </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="overflow-auto w-100 h-100" style="max-height: 478px;" id="modalBody">
-                       
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-info" id="btnPay">Thanh toán tiền mặt</button>
+                        <button type="button" class="btn btn-info" id="btnVnpay">Thanh toán VNPAY</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                      
                     </div>
                 </div>
             </div>
@@ -34,7 +38,6 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                      
                     </div>
                 </div>
             </div>
@@ -60,7 +63,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div>
+                                <!-- <div>
                                     <button type="button" class="btn btn-labeled btn-info" id="btn-add"
                                         onclick='ModifyScreen()'>
                                         <span class="btn-label"><i class="fa fa-plus"></i></span> Thêm order
@@ -70,8 +73,8 @@
                                         <span class="btn-label"><i class="fa fa-list fa-beat-fade"></i></span>Danh sách
                                         order
                                     </button>
-                                </div>
-                                <table class="table table-bordered " id="orderTable" cellspacing="0" width="100%">
+                                </div> -->
+                                <!-- <table class="table table-bordered " id="orderTable" cellspacing="0" width="100%">
                                     <thead>
                                         <tr>
                                             <th class="th-sm">STT</th>
@@ -84,7 +87,10 @@
                                     </thead>
                                     <tbody id="orderTableBody">
                                     </tbody>
-                                </table>
+                                </table> -->
+                                <div  class="main-element" id="listTable">
+                                
+                                </div>
                             </div>
                     </div>
                     <footer class="sticky-footer bg-white">
@@ -110,7 +116,7 @@
                         }
                     </script>
                     <!-- <script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js" type="module"></script> -->
-                    <script type="module" src="../public/js/home.js">
+                    <script type="module" src="../public/js/newHome.js">
                     </script>
                     <!-- <script>
                         $(document).ready(function () {

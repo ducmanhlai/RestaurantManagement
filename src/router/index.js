@@ -9,6 +9,7 @@ import order_router from "./order";
 import qr_router from "./qr";
 import status_order_router from "./status_order";
 import statistics_router from "./statistics";
+import report_router from "./router";
 import paymentRouter from "./pay";
 export default function router(app) {
    app.use('/view',home_router);
@@ -22,6 +23,7 @@ export default function router(app) {
    app.use('/api/v1/statistics', statistics_router);
    app.use('/api/v1/status_order',status_order_router);
    app.use('/api/v1/payment',paymentRouter)
+   app.use('/api/v1/report',report_router)
    app.use('/api/v1/qr',qr_router)
  }
  

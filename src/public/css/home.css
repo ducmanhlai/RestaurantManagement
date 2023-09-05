@@ -16,3 +16,25 @@
 .bg-violet{
   background-color: #6f42c1;
 }
+.main-element{
+  display: grid;
+  gap: 50px 100px;
+  grid-template-columns: auto auto auto;
+  background-color: #67d4ff;
+  padding: 10px;
+}
+.table-element{
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+.table-element-select{
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+  background-color: rgba(247, 13, 13, 0.8);
+  color: black;
+}

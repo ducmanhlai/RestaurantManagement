@@ -86,6 +86,7 @@ function renderListOrder(data) {
       let id = ele.id.replace('i', "");
       setTimeout(async () => {
         try {
+          var listStatus =['Đã gọi', 'Đã hoàn thành', 'Đã hủy', 'Đã thanh toán']
           const data = (await axiosApiInstance.get(`/api/v1/order/get?id=${id}`)).data.data
           const modalBody = document.getElementById('modalBody')
           modalBody.innerHTML = ''
@@ -100,12 +101,13 @@ function renderListOrder(data) {
                <div class='col-6'>
                <p >${item.id_dish_food.name}</p>
                <p >Số lượng: ${item.quantity}</p>
+               <p >Trạng thái: ${listStatus[item.status-1]}</p>
                <p >${item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
                </div>
         `
             modalBody.appendChild(div)
             myModal.show()
-          }, 1000)
+          }, 500)
         } catch (error) {
           showToast('Lỗi', error)
         }
@@ -131,7 +133,7 @@ function renderListOrder(data) {
           bankCode: 'NCB',
           orderId: Number.parseInt(id)
         })).data.data
-        imgElement.setAttribute('src',data)
+        imgElement.setAttribute('src', data)
         payModal.show()
       } catch (error) {
         payModal.hide()

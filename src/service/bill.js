@@ -12,11 +12,11 @@ function createBill(id,staff,) {
       await page.goto(`http://localhost:8080/view/bill_pdf?id=${id}&staff=${staff}`);
       // await page.show();
       // Lấy nội dung HTML của trang
-      const html = await page.evaluate(() => document.querySelector('html').outerHTML);
-
-      // Tạo tệp PDF từ nội dung HTML
-      await page.pdf({ path: path.join(__dirname, `../../bill/bill-${id}.pdf`) });
-
+      setTimeout(async ()=>{
+        const html = await page.evaluate(() => document.querySelector('html').outerHTML);
+        // Tạo tệp PDF từ nội dung HTML
+        await page.pdf({ path: path.join(__dirname, `../../bill/bill-${id}.pdf`) });
+      },5000)
       // Đóng trình duyệt
       // await browser.close();
     } catch (error) {

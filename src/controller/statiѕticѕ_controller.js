@@ -100,7 +100,7 @@ class statistics_controller {
                     as: 'id_dish_food',
                     attributes: ['name'],
                 },
-                attributes: [[fn('COUNT', col('id_dish')), 'num']],
+                attributes: [[fn('COUNT', col('quantity')), 'num']],
                 group: ['id_dish'],
                 order: [
                     ['num', 'DESC'],
